@@ -95,8 +95,25 @@ buffers indicador del TFO. Para finalizar el proceso de transform feedback se ut
 glEndTransformFeedback
 
 
+/*
+¿Qué es un Frame Buffer Object? Describa la forma de crearlo y utilizarlo
+*/
 
+El proceso de renderizado genera el contenido de la imagen en el ColorBuffer. Si además se
+encuentra activada la opción de “test de profundidad”, se almacena la información sobre la
+coordenada z (profundidad) en una estructura paralela llamada DepthBuffer. Existe otro buffer,
+el StencilBuffer, que se utiliza como buffer auxiliar para otro tipo de información configurable.
 
+Un FrameBuffer Object (FBO) es una estructura de datos que describe la salida del proceso de
+renderizado y contiene enlaces al ColorBuffer, DepthBuffer y StencilBuffer. Por defecto,
+OpenGL crea un FBO con identificador 0 que asocia a la pantalla.
+Para crear un FBO se utiliza la función glGenFramebuffers, indicándole el número de FBOs a
+crear y el array donde están los identificadores. Para activar uno, se utiliza glBindFramebuffer.
 
-
+Para dirigir el proceso de renderizado a memoria, se crea un FBO y los buffers que estén
+vinculados a él (Color y Depth). Para vincular estos buffers al FBO, se utiliza
+glFramebufferTexture2D si el DepthBuffer está cargado como textura, si no, es necesario
+cargarlo mediante un RenderBuffer. El tamaño de los buffers debe ser el mismo. Una vez
+vinculados, se activa el FBO. Por último, se indica que el FBO será el buffer de dibujo mediante
+glDrawBuffers. Después hay que devolver la salida del renderizado a la pantalla
 
