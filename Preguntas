@@ -1,1 +1,102 @@
 
+/*
+Describa brevemente las etapas del proceso de renderizado utilizado en OpenGL. (Un párrafo para cada etapa)
+*/
+
+Etapas del proceso de renderizado:
+- VertexShader: se ejecuta sobre cada vértice de forma independiente. Utiliza atributos de
+entrada asociados a cada vértice y genera como salida la posición del vértice en
+coordenadas clip.
+
+- Ensamblado de primitivas: es una etapa no programable. Recibe la indicación de las
+primitivas a dibujar y los atributos de los vértices que las forman, generados por el
+VertexShader. Además, detecta si están ocultos o fuera del área de dibujo.
+
+- Teselado: recibe los datos de un parche y genera nuevas primitivas. Se divide en:
+    - Control de teselado (TCS): recibe los vértices del patch y genera los valores de los
+      vértices de las primitivas que se crearán.
+    - Generación de primitivas (TPG): genera las primitivas en un espacio de coordenadas
+      llamado espacio de parámetros, sus coordenadas se denominan u y v, que van de 0 a 1.
+    - Evaluación de teselado (TES): transforma las coordenadas del espacio de parámetros
+      a coordenadas de posición de los vértices (clip).
+
+- GeometryShader: es una etapa opcional. Recibe primitivas ya ensambladas y permite
+realizar modificaciones sobre ellas.
+
+- Rasterización e interpolación: es una etapa no programable. Estudia qué vértices quedan
+dentro del clipping volumen, desechando aquellos que estén fuera, y adaptando las
+primitivas que estén parcialmente fuera a través de nuevos vértices. Después, se identifican
+qué pixeles forman parte de la primitiva a dibujar según la ubicación del centro del píxel.
+
+- FragmentShader: se ejecuta por cada píxel dentro de la primitiva, recibiendo los valores
+interpolados para el píxel. Genera el color asociado al píxel.
+
+- Operaciones de raster: combina los diferentes fragmentos para generar la versión final de
+la imagen.
+
+El proceso de renderizado genera al final el contenido de la imagen en una estructura que
+conoceremos como Color Buffer.
+
+
+
+/*
+¿Qué es un Vertex Buffer Object? ¿Y un Vertex Array Object? Describa la forma de crearlos y configurarlos
+*/
+
+- Vertex Buffer Object
+Un VBO es una estructura de datos que puede almacenar en la memoria de la GPU diferentes
+tipos de información, según qué tipo de buffer se le asigna al activarlo como, por ejemplo:
+almacenar atributos de los vértices o almacenar una lista de índices a vértices.
+
+Se crean, desde el código para la CPU, a través de la función glGenBuffers, donde se le pasa el
+número de buffers a crear y los identificadores de los buffers. Ya creado un VBO, para poder
+utilizarlo es necesario activarlo con la función glBindBuffer, donde se le indica qué tipo de
+buffer será. Por último, para almacenar los datos se utiliza la función glBufferData, indicándole
+el tipo de buffer a llenar y dónde están los datos que va a guardar.
+
+- Vertex Array Object
+Cuando ya estén creados los VBOs y almacenados los datos de los vértices, el siguiente paso es
+crear los Vertex Array Objects. Éstos son estructuras de datos que definen el mapeo entre los
+atributos (almacenados en los VBOs) y los nombres de las entradas de los shaders.
+A través de la función glGenVertexArrays podemos crear un cierto número de VAOs y obtener
+sus identificadores. Para usar un VAO, se activa primero con la función glBindVertexArray.
+Para definir un atributo perteneciente a un VAO se usa la función glVertexAttribPointer,
+indicándole el índice, cuantos datos habrá por atributo y el tipo que será.
+Para asignar la posición de una variable de entrada, se utiliza la función glBindAttribLocation,
+indicándole el shader, la posición del atributo y el nombre de la variable
+
+
+
+/*
+¿Qué es un Transform Feedback Object? Describa la forma de crearlo y utilizarlo
+*/
+
+Una de las formas para generar escenas con figuras no rígidas es el Transform Feedback. Este
+consiste en modificar los atributos de los vértices en función de los valores generados en un
+renderizado anterior, lo que requiere almacenar los datos generados en la memoria de la GPU
+y ser capaz de leerlos en futuros renderizados.
+
+La técnica utilizada se conoce como buffer “ping-pong” porque realiza el renderizado en dos
+pasadas. En la primera se ejecuta sólo el VertexShader, y en la segunda se realiza el proceso
+completo, tomando como entrada el buffer generado en la primera pasada.
+
+Se definen dos Transform Feedback Object (TFO) que describen los buffers a utilizar como
+salida y entrada del VertexShader. Estos se crean con glGenTransformFeedbacks, indicando el
+número de buffers y el array donde están los identificadores, en este caso serían 2. Se activan
+con glBindTransformFeedback y se enlazan tantos buffers como se quieran tener ubicados con
+glBindBufferBase (un buffer por cada valor que se quiera conservar).
+
+Después, se define la relación entre las salidas de los shaders y los buffers que forman el TBO
+con glTransformFeedbackVaryings. Durante el renderizado hay que iniciar el proceso de 
+transform feedback con la función glBeginTransformFeedback.
+
+Cuando se lancen las primitivas de dibujo, las salidas del VertexShader se almacenarán en los
+buffers indicador del TFO. Para finalizar el proceso de transform feedback se utiliza el comando
+glEndTransformFeedback
+
+
+
+
+
+
+
