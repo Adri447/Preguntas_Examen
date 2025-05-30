@@ -7,10 +7,14 @@ Etapas del proceso de renderizado:
 - VertexShader: se ejecuta sobre cada vértice de forma independiente. Utiliza atributos de
 entrada asociados a cada vértice y genera como salida la posición del vértice en
 coordenadas clip.
+• Entrada: vértices.
+• Salida: transformed vértices, transform feedback
 
 - Ensamblado de primitivas: es una etapa no programable. Recibe la indicación de las
 primitivas a dibujar y los atributos de los vértices que las forman, generados por el
 VertexShader. Además, detecta si están ocultos o fuera del área de dibujo.
+• Entrada: transformed vértices, primitive/patch conectivity.
+• Salida: primitives, patches
 
 - Teselado: recibe los datos de un parche y genera nuevas primitivas. Se divide en:
     - Control de teselado (TCS): recibe los vértices del patch y genera los valores de los
@@ -19,20 +23,31 @@ VertexShader. Además, detecta si están ocultos o fuera del área de dibujo.
       llamado espacio de parámetros, sus coordenadas se denominan u y v, que van de 0 a 1.
     - Evaluación de teselado (TES): transforma las coordenadas del espacio de parámetros
       a coordenadas de posición de los vértices (clip).
+• Entrada: patches.
+• Salida: primitives, transform feedback.
 
-- GeometryShader: es una etapa opcional. Recibe primitivas ya ensambladas y permite
-realizar modificaciones sobre ellas.
+- GeometryShader: es una etapa opcional. Recibe primitivas ya ensambladas y permite realizarç
+modificaciones sobre ellas. La información adyacente debe tratarse dentro de este shader
+• Entrada: primitives.
+• Saldia: primitives,transform feedback
 
 - Rasterización e interpolación: es una etapa no programable. Estudia qué vértices quedan
 dentro del clipping volumen, desechando aquellos que estén fuera, y adaptando las
 primitivas que estén parcialmente fuera a través de nuevos vértices. Después, se identifican
 qué pixeles forman parte de la primitiva a dibujar según la ubicación del centro del píxel.
+• Entrada: primitives.
+• Salida: fragments
 
-- FragmentShader: se ejecuta por cada píxel dentro de la primitiva, recibiendo los valores
-interpolados para el píxel. Genera el color asociado al píxel.
+- FragmentShader: Etapa programable y no opcional, se ejecuta por cada píxel dentro de la primitiva, 
+recibiendo los valores interpolados para el píxel. Genera el color asociado al píxel.
+• Entrada: fragments.
+• Salida: shaded fragments
 
-- Operaciones de raster: combina los diferentes fragmentos para generar la versión final de
-la imagen.
+- Operaciones de raster: Etapa no programable que combina los diferentes fragmentos para generar 
+la versión final de la imagen. Algunos de los procesos incluidos en esta etapa 
+pueden ser ejecutados antes del FragmentShader por motivos de eficiencia.
+• Entrada: shaded fragments.
+• Salida: pixels
 
 El proceso de renderizado genera al final el contenido de la imagen en una estructura que
 conoceremos como Color Buffer.
@@ -115,5 +130,288 @@ vinculados a él (Color y Depth). Para vincular estos buffers al FBO, se utiliza
 glFramebufferTexture2D si el DepthBuffer está cargado como textura, si no, es necesario
 cargarlo mediante un RenderBuffer. El tamaño de los buffers debe ser el mismo. Una vez
 vinculados, se activa el FBO. Por último, se indica que el FBO será el buffer de dibujo mediante
-glDrawBuffers. Después hay que devolver la salida del renderizado a la pantalla
+glDrawBuffers. Después hay que devolver la salida del renderizado a la pantalla.
+
+
+
+/*
+Describa el proceso de generación automática de primitivas por medio de las etapas
+de teselado. ¿Qué funciones realiza cada etapa del proceso de teselado? 
+¿Qué entradas y salidas utiliza cada etapa? ¿Cómo se configura el nivel de teselado?
+*/
+
+Es una etapa opcional del proceso de renderizado, pero si un programa contiene esta etapa,
+sólo se pueden renderizar primitivas de tipo parche. Esta etapa se divide en tres fases:
+
+- Control de teselado (TCS): recibe los vértices del parche y con su información genera los
+valores de los vértices de las primitivas que se crearán.
+
+- Generación de primitivas (TPG): recibe una lista con los vértices, obtenidos de la fase
+anterior, de la primitiva que va a crear. Las primitivas que genera las sitúa en un espacio de
+coordenadas llamado espacio de parámetros, donde sus coordenadas se denominan u y v,
+que van de 0 a 1.
+
+- Evaluación de teselado (TES): recibe las coordenadas de cada vértice (tessCoord) en el
+espacio de parámetros y los atributos de los parches (gl_in) y los transforma a coordenadas
+de posición de los vértices (clipping volume).
+
+El nivel de teselado se puede configurar como variables de entrada uniforme del TPG que
+indiquen el número de puntos de control que tendrá una superficie. Pero también puede
+calcularse internamente según la profundidad por ejemplo (indicando en la entrada los niveles
+máximo y mínimo de profundidad)
+
+
+
+/*
+¿Qué es una textura? ¿Qué tipos de texturas existen? ¿Como se crean las texturas?
+¿Como se asigna su contenido? ¿Como se aplican las texturas?
+*/
+
+Una textura es la aplicación de una imagen a una primitiva geométrica. Los puntos de las
+texturas son los texels.
+
+Según cómo esté estructurada, hay varios tipos de texturas:
+- Texturas 1D: es un vector de texels en una dimensión.
+- Texturas 2D: matriz de textels.
+- Texturas 3D: matriz tridimensional de texels (colección de imágenes).
+- Texturas Cubemap: es un conjunto de 6 superficies cuadradas distribuidas como las caras de un cubo.
+
+Para trabajar con texturas, se definen objetos texturas que definen buffers de datos que se
+almacenan en la tarjeta gráfica. Cada objeto textura se identifica mediante un número.
+
+Se reservan/crean los identificadores de texturas mediante la función glGenTextures,
+indicándole el número de identificadores que se deseen y un array donde los almacene.
+Después, se define el tipo de textura que tendrá un identificador a través de la función
+glBindTexture. Por último, para cargar una textura a un identificador, se utiliza la función
+glTexImage_D según el tipo de textura.
+
+También se puede asignar las texturas copiando los valores del color buffer con
+glCopyTexImage_D, indicando desde qué posición tiene que copiar. Otra forma puede ser
+cargar sólo un trozo de una textura sobre la ya cargada con glSubTexImage_D, indicando desde
+qué posición empieza a sobrescribir.
+
+Los puntos en las texturas se identifican con coordenadas (s, t, r, q) que parten desde la esquina
+inferior izquierda. Para aplicar una textura sobre una primitiva, se calculan las coordenadas de
+texturas correspondientes a cada píxel. Dado que los tamaños de la primitiva y la textura
+pueden ser diferentes, se filtrará la textura para aumentarla o encogerla. El proceso de filtrado
+se puede configurar con las funciones glTexParameter.
+
+En caso de que los tamaños de la primitiva y la textura sean muy diferentes, podría suceder
+que a dos píxeles consecutivos se le asocien texels alejados, produciendo aliasing. Una solución
+serían los Mipmaps, que consisten en tener versiones de la textura en tamaños inferiores
+
+
+
+/*
+Describa el modelo de iluminación de Phong. ¿Cuántos tipos de luz utiliza? 
+¿Como se calcula el efecto de cada tipo de luz?
+*/
+
+El modelo de Phong consiste en interpolar las propiedades de los vértices para cada pixel y
+calcular el color directamente en el FragmentShader. Aunque resulta más costoso, se
+consiguen mejores resultados de coloreado. De este modo, consiste en considerar la
+luz como la suma de tres efectos diferentes:
+
+- Luz ambiental: procede de todas direcciones.
+- Luz difusa: proviene de una determinada dirección y al chocar con un objeto se dispersa en
+todas las direcciones. La intensidad de esa dispersión depende del ángulo de incidencia.
+- Luz especular: es una luz que proviene de una única dirección y se refleja con el mismo
+ángulo de incidencia al chocar con un objeto.
+
+El color final de cada punto de un objeto se calcula como la suma de los efectos de color de
+cada tipo de luz.
+- Color provocado por luz ambiental: es el producto de la luz ambiental por el color del
+material ante la luz ambiental.
+- Color provocado por luz difusa: es el producto de la luz difusa por el color del material ante
+esa luz, multiplicados además por un factor de incidencia de la luz, siendo el coseno del
+ángulo formado por la dirección de la luz y el vector normal de la superficie.
+- Color provocado por luz especular: es el producto de la luz especular por el color del
+material con esa luz, multiplicados por un factor especular. Este factor se calcula como el
+coseno del ángulo entre el vector posición del observador (del punto al observador) y el
+vector reflexión de la luz, elevado a un coeficiente de brillo.
+
+Es importante tener en cuenta los distintos sistemas de coordenadas de los vectores que se
+utilizan. Para realizar todos los cálculos se transformarán todos los vectores a coordenadas de
+observador.
+Los cálculos para obtener el color final se hacen en el FragmentShader, por tanto, es necesario
+indicarle mediante variables uniformes de entrada las direcciones de los tipos de luz y el color
+del material del objeto para cada tipo de luz.
+
+
+
+/*
+Describa las diferentes primitivas geométricas incluidas en OpenGL. 
+¿Cómo se distingue la cara frontal de la cara posterior de los polígonos?
+*/
+
+
+Las primitivas incluidas en OpenGL son:
+- Punto, compuesto por un único vértice.
+- Línea, que une dos vértices.
+- Triángulo, formado por tres vértices. Es la forma de primitiva más utilizada.
+- Parche. No tienen un significado geométrico definido. Es un tipo especial de primitiva que
+se utiliza en los shaders de teselado, donde se convierte la información del parche en un
+conjunto de primitivas geométricas.
+
+Salvo las primitivas de tipo parche, que se convierten en otras primitivas tras la etapa de
+teselado, todas pueden ser tratadas directamente por el Fragment Shader, a no ser que estén
+definidas como primitivas de adyacencia. Estas primitivas son aquellas que comparten aristas
+con otras primitivas, pero una de ellas se observa desde su cara frontal y la otra desde su cara
+posterior.
+
+Para distinguir entre la cara frontal y posterior de una primitiva, se obtiene el vector normal de
+la primitiva. Este es un vector perpendicular a la superficie de la primitiva, y si su dirección en
+el eje z es positiva, entonces el triángulo está viéndose desde su cara frontal, si es negativa,
+desde su cara posterior.
+De forma más simple, la cara que se ve es la frontal si los vértices que componen la primitiva,
+en el momento de representarse, siguen un recorrido en sentido antihorario.
+
+
+
+/*
+Shader de Geometría
+*/
+
+Es un shader opcional en el proceso de renderizado. Se ejecuta por cada primitiva generada en
+la etapa de ensambado y su objetivo es realizar cambios sobre ella. Algunos de estos cambios
+pueden ser:
+
+- Eliminar primitivas.
+- Incorporar más nivel de detalle sustituyendo una primitiva por un número mayor de
+primitivas e interpolando los valores para los nuevos vértices.
+- Introducir nuevas propiedades en los vértices, calculadas en base a la información
+geométrica. No puede realizarse en el VertexShader ya que ahí no se trata información de
+vértices vecinos.
+- Sustituir la primitiva por otra diferente.
+
+Tiene como entrada un array que almacena la información de cada vértice de la primitiva. Para
+cada vértice, la estructura recibida indica: su posición, el tamaño del punto y distancia a los
+planos clip (si esta función está activada).
+Su salida predefinida son las nuevas primitivas.
+
+Su funcionamiento se basa en dos funciones predefinidas:
+- EmitVertex: genera los vértices de las nuevas primitivas. Se guarda como vértice el valor que
+esté en la salida del shader (el valor de gl_position).
+- EndPrimitive: indica que los vértices generados anteriormente forman una primitiva. Los
+siguientes vértices que puedan generarse pertenecerán a otra primitiva
+
+
+
+/*
+Describa brevemente en que consiste el algoritmo básico de generación de sombras denominado ShadowMap
+*/
+
+Para poder añadir sombras a un dibujo, es necesario conocer si cada píxel de la imagen se
+encuentra en sombra o no, ya que, si está en sombra, sólo será iluminado por la luz ambiental.
+
+El algoritmo básico para generar sombras es el ShadowMap, que consiste en generar
+previamente una imagen de la escena desde el punto de vista del foco de luz y, en lugar de
+llevarla a la pantalla, se almacena en un Frame Buffer, guardando como textura la profundidad
+de los píxeles.
+
+Para generar esa imagen, es necesario tener la matriz LightView que transforma de
+coordenadas de modelo a coordenadas de observador, siendo éste la luz, y la matriz
+LightProjection, que hará la transformación a coordenadas clip. 
+Según el origen de la luz, si es un foco, se debe configurar como una proyección en perspectiva, 
+pero si son luces direccionales, se calculará como una proyección ortográfica.
+
+Para saber si un punto del modelo está en sombra, a través sus coordenadas clip en el sistema
+de la luz, se obtiene la distancia (profundidad) hasta el origen de luz. Después, tomando la
+imagen generada previamente desde el punto de vista de la luz, si la textura de la imagen, en
+el píxel donde se situaría el punto, tiene un valor menor (una profundidad menor), significa que
+hay un objeto más cercano a la luz impidiendo que le llegue esa luz y, por tanto, el punto estará
+en sombra.
+
+Sin embargo, el principal problema de este método es el aliasing. Ya que calculamos la sombra
+a partir de una imagen (textura) generada desde la luz, un punto en la textura puede abarcar
+en el modelo a muchos más puntos, quedando un pixelado en los límites de la sombra muy evidente.
+
+
+
+/*
+El primer paso del proceso de renderizado consiste en transformar las coordenadas de los vértices 
+(expresadas en un sistema de coordenadas local) en coordenadas de Clipping Volume.
+¿Como se configura esta transformación? ¿Qué matrices entran en juego? 
+Describa los dos tipos de proyecciones utilizados en OpenGL
+*/
+
+Generalmente, las coordenadas de los vértices se expresan inicialmente en un sistema de
+coordenadas propio del objeto al que pertenecen. Cuando se añaden más objetos al modelo,
+es necesario que todos los objetos estén ubicados en un mismo sistema de coordenadas, que
+llamaremos coordenadas del modelo. Estando todas las figuras representadas con el mismo
+sistema de coordenadas, ya se puede realizar la proyección creando el volumen clip del modelo
+desde un punto de vista que será el observador.
+
+Para realizar las transformaciones entre los diferentes sistemas de coordenadas, se utilizan las
+siguientes matrices:
+- Model: esta matriz se utiliza para transformar las coordenadas locales de un objeto a
+coordenadas del modelo. Sitúa el objeto en una posición del modelo.
+- View: esta matriz se utiliza para transformar el sistema de coordenadas del modelo a otro
+sistema de coordenadas en el que el observador es el origen de coordenadas, lo transforma
+a coordenadas de observador.
+- Projection: esta matriz, a partir de las coordenadas de observador, obtiene las coordenadas
+en el clipping volumen.
+
+Según como sea la proyección, la matriz será de una forma u otra.
+
+La proyección convierte el volumen visible del modelo en el volumen clip. Según como lo haga:
+- Proyección ortográfica: consiste en transformar un volumen de forma rectangular en el
+volumen clip. Supone una transformación de escalas muy sencilla, pero provocaría que los
+objetos se vean del mismo tamaño estén cerca o lejos.
+
+- Proyección en perspectiva: consiste en transformar el espacio que se ve desde el
+observador con un cierto ángulo de visión en el volumen clip. El volumen tendría una forma
+similar a un tronco de pirámide y provocaría que los objetos más cercanos se vean de mayor
+tamaño que los más lejanos.
+
+
+
+/*
+Creación de un programa gráfico
+*/
+
+En un programa gráfico se distinguen dos partes principales:
+- Las ejecutadas por la CPU, que utilizan funciones de OpenGL en C/C++.
+- Las ejecutadas por la tarjeta gráfica, los shaders. Escritos en GLSL, serán cargados al programa.
+
+Desde la parte ejecutada por la CPU, se crean los shaders y se les asigna el código en modo
+texto. Después se compilan y quedan listos para ser añadidos al programa gráfico. Serán
+obligatorios tanto el VertexShader como el FragmentShader para poder instalar el programa
+en el pipeline de renderizado.
+
+
+
+/*
+Subrutinas de GLSL
+*/
+
+Una subrutina es un mecanismo que permite seleccionar una función basado en el valor de
+una variable uniforme. Esto sucede en tiempo de ejecución sin necesidad de modificar el
+programa ni de instrucciones if.
+
+Para crear una subrutina se utiliza la instrucción subroutine seguida de la declaración del tipo
+de función. Después, para crear una variable uniforme que contenga un puntero a una
+subrutina se utiliza la instrucción subroutine uniform subrutina variable.
+
+Para crear funciones que desarrolla una subrutina, se incluye la instrucción subroutine (subrutinas)
+y a continuación la declaración de la función. La subrutina se utiliza en el código como si fuera una función.
+
+La selección de la subrutina en el programa OpenGL se realiza asignando el valor a la variable
+uniforme. Primero se obtiene la posición de la función con glGetSubroutineIndex y, después, a
+la variable uniforme de tipo subrutina se le asigna el valor obtenido mediante
+glUniformSubroutine_
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
