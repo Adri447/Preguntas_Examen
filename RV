@@ -403,6 +403,50 @@ glUniformSubroutine_
 
 
 
+/*
+Shaders
+*/
+
+Vertex Shader
+Es la primera etapa del proceso de renderizado. Se ejecuta sobre cada vértice por separado
+utilizando atributos de entrada asociados al vértice como la posición, la normal, coordenadas
+de textura, etc. También puede utilizar variables uniformes para compartir valores de entrada
+comunes a todos los vértices.
+Tiene además dos entradas predefinidas que indican el índice del vértice en los arrays de
+atributos y el número de instancia del vértice, por defecto es 0.
+Genera como salida, al menos, la posición del vértice en coordenadas normalizadas (clip).
+Puede generar también otros valores que se quieran utilizar en siguientes etapas.
+
+Ejemplo de Vertex Shader que transforma la posición del vértice a coordenadas clip:
+#version 400
+in vec3 Pos;
+uniform mat4 MVP;
+void main() {
+    gl_position = MVP * vec4(Pos, 1.0);
+}
+
+Fragment Shader
+Se ejecuta por cada píxel dentro de la primitiva, recibiendo los valores interpolados para el píxel
+y genera el color asociado al píxel.
+Sus entradas predefinidas serían:
+- Las coordenadas del píxel.
+- El índice de la primitiva que está asociada al píxel.
+- Una variable que indica si la primitiva está generada en su cara frontal o en su cara trasera.
+
+Una salida que tiene ya definida es la profundidad asociada al píxel, que se almacenará en el
+buffer de profundidad.
+Aunque el objetivo principal de este shader sea calcular el color del píxel, no existe una variable
+de salida predefina para este dato, por lo que se toma como salida definida para el color aquella
+salida que esté definida en la posición 0.
+
+Ejemplo de Fragment Shader que dibuja de color rojo todos los píxeles de la primitiva:
+#version 400
+out vec4 Color;
+void main() {
+    Color = vec4(1.0, 0.0, 0.0, 1.0);
+}
+
+
 
 
 
