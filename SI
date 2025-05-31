@@ -1,15 +1,13 @@
 
 
 /*
-Define Agente y describe los tipossegún racionalidad
+Define Agente y describe los tipos según racionalidad
 */
 
 
-Un agente es todo aquello que es capaz de predecir su entorno mediante sensores y actúa sobre él 
-a través de efectores. Un agente no requiere la participación de los humanos para operar.
-Los agentes inteligentes son autónomos y son capaces de responder a los cambios que se producen 
-en el entorno. También pueden tomar la iniciativa para conseguir objetivos.
-Por último los agentes inteligentes son capaces de interactuar con otros agentes mediante algún lenguaje.
+Un agente es todo aquello que es capaz de percibir su entorno mediante sensores y actúa sobre él 
+a través de efectores. Los agentes inteligentes son autónomos, es decir, pueden tomar la iniciativa 
+para conseguir objetivos. Además, son capaces de interactuar con otros agentes mediante algún lenguaje.
 
 Tipos de Agentes.
 - Agentes reactivos: seleccionan una acción en función de la percepción actual. se implementan
@@ -24,10 +22,55 @@ con un número real que indica el grado de satisfacción.
 La elección de la acción se hace en función de las percepciones y del elemento de aprendizaje.
 
 
+/*
+Entorno y cómo se clsifica
+*/
+
+El entorno de un agente es el medioambiente al que se ajusta el agente. Es el escenario donde el agente ç
+ejecutará sus acciones mediante sus efectores.
+
+- Accesibles o no accesibles: si los sensores de están los aspectos que requiere el agente para elegir una acción 
+- Deterministas o no deterministas: si el estado siguiente se puede determinar completamente en función del 
+estado actual
+- Episódicos o no episódicos: si la experiencia de la gente se divide en episodios. Cada acción corresponde a las 
+percepciones de un único episodio.
+- Estáticos o dinámicos: si el entorno no varía mientras el agente está decidiendo.
+- Discreto o continuo: si hay una cantidad limitada de percepciones y acciones distintas y distinguibles.
+
+
+/*
+Diferencia Pregramación basada en Agentes y Programacion Orientada a Objetos
+*/
+
+La programación orientada a objetos POO permite crear entidades que sean capaces de controlar su estado pero 
+no es su comportamiento. En cambio la programación basada en agentes PBA permite controlar ambas características.
+
+En PBA el agente capaz de rechazar la ejecución de una acción, sin embargo en POO un método será ejecutado 
+siempre que sea invocado. 
+Además en POO la decisión de ejecutar un método viene dada por el objeto que invoca.
+en cambio un agente decide realizar una acción en función de sus intereses.
 
 
 
+/*
+POP Planificación de orden parcial
+a) ¿Qué es una precondición abierta del mismo?
+b) ¿Y una amenaza?
+c) ¿Qué es Plan Parcial Final?
+d) ¿En qué consiste secuenciar un plan parcial final?
+*/
 
+a) Una precondición abierta de un plan parcialmente ordenado es aquella relación entre 2 acciones en las que 
+no existen enlaces causales que consiguen dichas precondiciones.
+
+b) Una amenaza es una situación en la que una acción elimina una o varias de las precondiciones 
+de otra acción y que no tienen relación de orden entre sí. 
+
+c) Un plan parcial final es un plan parcial en el que no existen ciclos ni precondiciones abiertas y 
+sin conflicto entre las acciones del plan.
+
+d) Secuenciar un plan parcial final consiste en generar una lista de acciones que respetan las relaciones 
+de orden entre las acciones del plan parcial.
 
 
 
@@ -66,7 +109,15 @@ El protocolo ContractNet es un protocolo de asignación y compartición de tarea
                puede volver a asignar su tarea o partes de ella a otros agentes.
 
 
+/*
+Comunicación mediante Pizarra
+*/
 
+La comunicación mediante pizarra se utiliza en la coordinación de sistemas multiagentes. 
+Consiste en una estructura de datos en la que todos los agentes del sistema pueden escribir y leer. 
+
+No permite la concurrencia por lo que es necesario mantener la exclusión mutua para evitar que dos 
+agentes puedan acceder al mismo tiempo.
 
 
 
