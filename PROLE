@@ -1,1 +1,46 @@
 
+/*
+Gestion de la memoria en tiempo de ejecución
+a) ¿En qué consiste la memoria de pila?
+b) Describa La estructura del registro de activación de una función
+c) Describa el proceso de llamada a una función 
+d) Describa el proceso de retorno de una función
+*/
+
+a)
+La memoria de pila es una forma de gestionar la memoria durante la ejecución de un programa. Está basada en una pila 
+donde se apilan registros de activación de las diferentes funciones que se van llamando. El registro de activación 
+que se encuentra en la cima de la pila pertenecerá a la función que está en ejecución en ese momento.
+
+Al terminar la ejecución de la función se desapila el registro correspondiente y se devuelve el control a la 
+función que se encuentra en la cima de la pila. Este tipo de gestión de la memoria necesita almacenar el estado 
+de la máquina cada vez que se apila un registro de activación y la dirección de comienzo de dicho registro.
+
+Esta gestión permite manejar lenguaje estructurados que permiten realizar llamadas recursivas
+
+
+b)
+El registro de activación de una función es una estructura de datos que permite almacenar información sobre la 
+función. Está dividido en dos partes: la parte de la función llamada y la parte de la función que llama.
+  1) Parte de la funcion llamada: La función llamada establece en el registro de activación las variables temporales,
+     las variables locales y el estado de la máquina.
+  2) Parte de la función que llama: La función que llama establece la dirección de retorno el valor de los parámetros 
+     y el valor devuelto por la función.
+
+c)
+El proceso de llamada de una función consiste en 6 etapas:
+  1- Reservar espacio por el valor devuelto.
+  2- Almacenar el valor de los parámetros.
+  3- Almacenar el valor de la dirección de retorno.
+  4- Almacenar el estado de la máquina (SP + FP) 
+  5- Pasar el control a la función llamada 
+  6- Comenzar la ejecución del código de la función llamada.
+
+d)
+El proceso de retorno de una función conste de 5 etapas:
+  1- Asignar el valor de vuelto.
+  2- Restablecer el estado de la máquina.
+  3- Restaurar el valor de la dirección de retorno.
+  4- Devolver el control a la función que llama.
+  5- Almacenar el valor devuelto en la variable adecuada.
+
