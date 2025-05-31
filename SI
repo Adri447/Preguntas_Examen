@@ -1,0 +1,81 @@
+
+
+/*
+Define Agente y describe los tipossegún racionalidad
+*/
+
+
+Un agente es todo aquello que es capaz de predecir su entorno mediante sensores y actúa sobre él 
+a través de efectores. Un agente no requiere la participación de los humanos para operar.
+Los agentes inteligentes son autónomos y son capaces de responder a los cambios que se producen 
+en el entorno. También pueden tomar la iniciativa para conseguir objetivos.
+Por último los agentes inteligentes son capaces de interactuar con otros agentes mediante algún lenguaje.
+
+Tipos de Agentes.
+- Agentes reactivos: seleccionan una acción en función de la percepción actual. se implementan
+mediante reglas condicción-acción. a
+- Agentes reactivos basados en modelos: estos agentes mantienen un estado interno que se actualiza a lo 
+largo del tiempo. Utiliza un modelo del mundo y un conjunto de reglas. Se usa en entornos parcialmente observables.
+- Agentes basados en objetivos: buscan lograr ciertos objetivos. Se utilizan estrategias de búsqueda y de 
+planificación. Tienen en cuenta el futuro.
+- Agentes basados en utilidad: hacen uso de una función de utilidad que permite correlacionar un estado 
+con un número real que indica el grado de satisfacción.
+- Agentes aprendices: poseen un elemento de aprendizaje que mejora el rendimiento de la gente.
+La elección de la acción se hace en función de las percepciones y del elemento de aprendizaje.
+
+
+
+
+
+
+
+
+
+/*
+Coordinación Centralizada VS Distribuida
+*/
+
+La coordinación Centralizada utiliza un agente específico llamado controlador centralizado, mientras que,
+la coordinación Distribuida distribuye la carga de trabjo y el control entre todos los agentes del sistema.
+
+Las ventajas de la coordinación centralizada serían el coste, ya que se debe centrar en el agente coordinador
+y que se asegurará la coordinación a cambio de perder la autonomiá en los demás agentes, que están 
+sometidos a la voluntad del agente coordinador. Una gran desventaja es la gran dependencia que existe sobre 
+el agente coordinador, ya que si este colapsa, el sistema también podría hacerlo.
+
+Por otro lado, la coordinación Distribuida tiene un mayor coste ya que todos los agentes deben de poder 
+coordinarse entre ellos. Sin embargo, tienen mayor autonomía y si uno falla, el sistema puede recuperarse
+sin problemas. No obstante, cuando la resolución del problema es difícil, obtener comportamientos
+independientes es irrazonable.
+
+
+
+/*
+Contract Net
+*/
+
+El protocolo ContractNet es un protocolo de asignación y compartición de tareas en Sistemas Multiagentes:
+
+1) Reconocimiento: Un Agente reconoce que tiene un problema y no puede o no quiere solucionarlo solo.
+2) Anuncio: El Agente envía una señal a todos los demás agentes del sistema (Broadcast). Esta señal
+            debe tener una descripción del problema, junto a las restricciones de este y meta-información.
+3) Puja: Los Agentes deciden si participan en la tarea propuesta o no. En caso afirmativo, envían una
+         oferta al agente que está pidiendo ayuda.
+4) Concurso: El Agente que propone la tarea elige al Agente que realizará dicha tarea.
+5) Asignación: El resultado se comunica a todos los agentes que habían enviado ua oferta. El ganador
+               puede volver a asignar su tarea o partes de ella a otros agentes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
