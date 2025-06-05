@@ -4,14 +4,13 @@
 Define Agente y describe los tipos según racionalidad
 */
 
-
 Un agente es todo aquello que es capaz de percibir su entorno mediante sensores y actúa sobre él 
 a través de efectores. Los agentes inteligentes son autónomos, es decir, pueden tomar la iniciativa 
 para conseguir objetivos. Además, son capaces de interactuar con otros agentes mediante algún lenguaje.
 
 Tipos de Agentes.
 - Agentes reactivos: seleccionan una acción en función de la percepción actual. se implementan
-mediante reglas condicción-acción. a
+mediante reglas condicción-acción.
 - Agentes reactivos basados en modelos: estos agentes mantienen un estado interno que se actualiza a lo 
 largo del tiempo. Utiliza un modelo del mundo y un conjunto de reglas. Se usa en entornos parcialmente observables.
 - Agentes basados en objetivos: buscan lograr ciertos objetivos. Se utilizan estrategias de búsqueda y de 
@@ -29,9 +28,9 @@ Entorno y cómo se clsifica
 El entorno de un agente es el medioambiente al que se ajusta el agente. Es el escenario donde el agente ç
 ejecutará sus acciones mediante sus efectores.
 
-- Accesibles o no accesibles: si los sensores de están los aspectos que requiere el agente para elegir una acción 
+- Accesibles o no accesibles: si los sensores detectan los aspectos que requiere el agente para elegir una acción 
 - Deterministas o no deterministas: si el estado siguiente se puede determinar completamente en función del 
-estado actual
+estado actual y las acciones escogidas por el agente.
 - Episódicos o no episódicos: si la experiencia de la gente se divide en episodios. Cada acción corresponde a las 
 percepciones de un único episodio.
 - Estáticos o dinámicos: si el entorno no varía mientras el agente está decidiendo.
@@ -43,12 +42,14 @@ Diferencia Pregramación basada en Agentes y Programacion Orientada a Objetos
 */
 
 La programación orientada a objetos POO permite crear entidades que sean capaces de controlar su estado pero 
-no es su comportamiento. En cambio la programación basada en agentes PBA permite controlar ambas características.
+no su comportamiento. En cambio la programación basada en agentes PBA permite controlar ambas características.
 
 En PBA el agente capaz de rechazar la ejecución de una acción, sin embargo en POO un método será ejecutado 
 siempre que sea invocado. 
-Además en POO la decisión de ejecutar un método viene dada por el objeto que invoca.
+
+Además en POO la decisión de ejecutar un método viene dada por el objeto que invoca, 
 en cambio un agente decide realizar una acción en función de sus intereses.
+
 
 
 
@@ -71,6 +72,7 @@ sin conflicto entre las acciones del plan.
 
 d) Secuenciar un plan parcial final consiste en generar una lista de acciones que respetan las relaciones 
 de orden entre las acciones del plan parcial.
+
 
 
 
