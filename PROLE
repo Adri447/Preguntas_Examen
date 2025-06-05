@@ -48,13 +48,164 @@ El proceso de retorno de una función conste de 5 etapas:
 
 
 
+/*
+Describa las características y principales estrategias de gestión del montón en la memoria con reserva dinámica.
+*/
+
+La memoria con reserva dinámica, también conocida como montón o heap, es una región de memoria que permite la creación de estructuras cuyo tamaño y duración no se conocen en tiempo de compilación.
+Este tipo de memoria resulta esencial en la gestión de estructuras dinámicas como listas, árboles o grafos, y es intensamente utilizada en la programación orientada a objetos, 
+ya que en muchos lenguajes todos los objetos son almacenados en el montón.
+
+Las operaciones fundamentales en esta región de memoria son el alojamiento (asignación de un bloque) y el desalojo (liberación del mismo). 
+En lenguajes orientados a procesos, estas operaciones se realizan con funciones como malloc y free, mientras que en lenguajes orientados a objetos se utilizan new y delete. 
+Estas funciones están implementadas en bibliotecas de tiempo de ejecución que el compilador incorpora automáticamente al programa.
+
+Existen distintas estrategias para gestionar el montón, entre ellas:
+
+Bloques de longitud fija:
+Esta técnica consiste en gestionar el montón como una lista enlazada de bloques del mismo tamaño. El sistema mantiene un puntero al primer bloque libre. 
+El alojamiento se realiza asignando ese primer bloque, y el desalojo consiste en reintegrar el bloque liberado al inicio de la lista. 
+Aunque esta estrategia es sencilla y rápida, sufre una gran limitación: en la práctica, las peticiones de memoria son de tamaño variable, por lo que puede resultar muy ineficiente.
+
+Montón con estructura simple:
+En este caso, el montón se organiza como una lista enlazada de bloques de diferentes tamaños. Cada bloque contiene tres campos: el tamaño del bloque, 
+un puntero a la zona libre (utilizada si se asigna), y un puntero al siguiente bloque.
+
+1) En el proceso de alojamiento, pueden aplicarse varias estrategias:
+
+La estrategia del primer bloque consiste en recorrer la lista hasta encontrar un bloque suficientemente grande para la solicitud. Si es más grande que lo necesario, se divide, 
+asignando una parte y dejando la otra como un nuevo bloque.
+
+La estrategia del mejor bloque selecciona el bloque cuyo tamaño se ajusta mejor a la solicitud, lo cual minimiza desperdicio inmediato, pero suele producir una alta fragmentación.
+
+La estrategia del peor bloque asigna el bloque más grande disponible, intentando minimizar la fragmentación futura, aunque a costa de perder grandes bloques útiles para futuras asignaciones grandes.
+
+2) En el proceso de desalojo, también existen varias alternativas:
+
+Una posibilidad es colocar el bloque liberado al principio de la lista de bloques libres, lo cual es rápido pero dificulta la fusión con bloques contiguos y favorece la fragmentación.
+
+Otra opción es mantener la lista ordenada según la posición de memoria, lo que permite fusionar fácilmente bloques adyacentes, reduciendo la fragmentación, 
+aunque con un mayor coste en tiempo de inserción.
+
+En resumen, la gestión del montón debe equilibrar la eficiencia en tiempo de ejecución y el aprovechamiento del espacio, utilizando estructuras y estrategias que respondan 
+adecuadamente a los patrones de uso de memoria de cada aplicación.
+
+
 
 
 /*
-Memoria Dinámica
+Memoria Dinámica (Estructura de Bloques Marcados)
 */
 
+(a) Estructura de cada bloque
 
+En un esquema de gestión de memoria dinámica basado en bloques marcados, cada bloque de memoria contiene 
+información de control tanto al inicio como al final del mismo. 
+Esta estructura incluye un indicador que señala si el bloque está libre o ocupado, el tamaño total del bloque, 
+y punteros hacia los bloques anterior y siguiente dentro de la lista de bloques libres. 
+Esta duplicación de la información en ambos extremos del bloque facilita la detección y fusión de
+bloques adyacentes cuando se libera memoria, permitiendo así una gestión más eficiente y reduciendo la fragmentación.
+
+(b) Proceso de alojamiento
+
+Cuando un programa solicita memoria, el sistema busca en la lista de bloques libres aquel que tenga un tamaño suficiente para satisfacer la petición. 
+Dependiendo de la política empleada (como primer ajuste, mejor ajuste, etc.), se elige un bloque adecuado. 
+Si el bloque encontrado es significativamente más grande que lo solicitado, se divide: una parte se asigna al proceso, 
+y el resto se mantiene como bloque libre, con sus propios campos de control. 
+En ambos casos, se actualizan los punteros en la lista de bloques libres para reflejar la asignación realizada.
+
+(c) Proceso de desalojo
+
+Cuando se libera un bloque previamente asignado, este se marca como libre y se intenta fusionar con los bloques adyacentes si también están libres. 
+Esto puede dar lugar a cuatro situaciones: 
+  -  si ninguno de los bloques vecinos está libre, se agrega el bloque tal cual a la lista de libres
+  -  si uno de ellos está libre, se fusiona con él
+  -  si ambos lo están, se fusiona con ambos para formar un bloque más grande. 
+Este proceso es clave para minimizar la fragmentación externa y mejorar la reutilización del espacio disponible. 
+Finalmente, se actualiza la lista de bloques libres para reflejar la nueva situación tras la fusión.
+
+
+
+/*
+Memoria Dinámica (Estructura de División Fija)
+*/
+
+(a) Estructura de cada bloque
+
+En un esquema de gestión de memoria basado en bloques de división fija según la serie de Fibonacci, la memoria se divide en bloques cuyo tamaño sigue esta secuencia 
+(por ejemplo, 1, 2, 3, 5, 8, 13, etc.). Cada bloque incluye información de control que indica su tamaño (identificado mediante su posición en la secuencia), su estado (ocupado o libre)
+y, en algunos casos, punteros a otros bloques de la misma clase de tamaño dentro una lista de bloques libres. 
+Dado que los tamaños están predefinidos, el sistema puede organizar listas separadas para cada clase de tamaño, lo que permite una gestión más rápida de la asignación y liberación.
+
+(b) Proceso de alojamiento
+
+Cuando se solicita un bloque de memoria, el sistema selecciona el tamaño más pequeño de la secuencia de Fibonacci que sea igual o mayor al tamaño solicitado. 
+A continuación, busca un bloque libre de esa clase; si no hay ninguno disponible, puede intentar dividir un bloque mayor en dos bloques de tamaños consecutivos en la secuencia
+(por ejemplo, dividir un bloque de tamaño 13 en bloques de tamaño 8 y 5). Esta división solo es posible si los tamaños resultantes también pertenecen a la serie de Fibonacci.
+Una vez asignado el bloque, se marca como ocupado y se retira de la lista de bloques libres correspondiente.
+
+(c) Proceso de desalojo
+
+Cuando se libera un bloque, este se marca como libre y se intenta fusionar con su bloque hermano si fue previamente creado mediante una división
+(por ejemplo, si un bloque de tamaño 13 fue dividido en 8 y 5, y ambos están libres, pueden ser reunidos de nuevo en uno de tamaño 13).
+Esta operación de fusión solo es válida si se preserva la coherencia con la secuencia de Fibonacci. Después de la fusión, el nuevo bloque se añade a la lista de bloques libres correspondiente. 
+Este mecanismo permite reutilizar la memoria de manera eficiente, aunque está limitado por las restricciones impuestas por la secuencia de tamaños válidos.
+
+
+
+
+/*
+Tipos de recolección de basura
+*/
+
+La recolección de basura es una técnica que permite la liberación automática de memoria dinámica, liberando al programador de esta responsabilidad, 
+especialmente en lenguajes como Java, Python, Prolog o Lisp. A diferencia de lenguajes imperativos como C o C++, donde la gestión de memoria recae sobre el programador, 
+en los lenguajes declarativos y otros de alto nivel, esta tarea es realizada por el compilador o el intérprete del lenguaje. Existen diversas técnicas para implementar la recolección de basura, 
+entre las cuales destacan la desocupación sobre la marcha, el marcado y barrido, la recolección por copia, la recolección generacional y la recolección incremental.
+
+
+1. Desocupación sobre la marcha (Free as you go)
+Este método se basa en liberar la memoria de un objeto justo en el momento en que deja de estar referenciado por cualquier puntero. Para ello, cada objeto mantiene un contador de enlaces,
+que se incrementa o decrementa cada vez que una variable pasa a referenciarlo o deja de hacerlo. Cuando el contador llega a cero, el objeto se libera.
+
+Aunque su simplicidad resulta atractiva, tiene serias limitaciones. No puede liberar estructuras circulares, ya que los contadores de sus objetos nunca llegan a cero. 
+Además, el coste de modificar punteros es elevado, lo que ralentiza la ejecución. Por ello, esta técnica no se utiliza habitualmente, 
+salvo en lenguajes como Rust, que restringen explícitamente el uso de referencias.
+
+
+2. Marcado y barrido (Mark-and-sweep)
+Este método trabaja en dos fases. Primero, se identifican las raíces (variables globales, locales, etc.) desde donde se pueden alcanzar los objetos del montículo. 
+En la fase de marcado, se recorren estas raíces y se marcan todos los objetos accesibles directamente o a través de referencias. Luego, en la fase de barrido, 
+se recorren todos los bloques de memoria dinámica (heap): los marcados se desmarcan, y los no marcados se consideran basura y se liberan.
+
+Para identificar las raíces, se emplean contadores que solo registran referencias desde variables locales o globales, ignorando referencias entre objetos. 
+De este modo, al desapilar funciones, se decrementan los contadores de los objetos referenciados, permitiendo mantener actualizadas las raíces efectivas.
+
+
+3. Recolección por copia (Copying Collection)
+Este método divide la memoria en dos áreas: from-space (zona activa) y to-space (zona libre del mismo tamaño). Durante la recolección, se copian todos los 
+objetos accesibles desde las raíces desde from-space a to-space, y luego se intercambian los roles de ambas zonas.
+
+La ventaja principal es que el alojamiento es secuencial y no requiere desalojo complejo, lo que simplifica la gestión de memoria. Sin embargo, requiere el doble de memoria 
+y obliga a actualizar todas las referencias a objetos, ya que cambian de dirección durante la copia. Para ello, se requiere identificar con precisión las raíces, 
+incluyendo registros de activación que contengan referencias y enlaces entre funciones.
+
+
+4. Recolección generacional
+Basada en la observación empírica de que los objetos jóvenes suelen morir pronto, esta técnica divide el montículo en generaciones (G0, G1, G2, etc.). 
+La recolección se realiza con más frecuencia en la generación más joven (G0) y menos en las siguientes. Los objetos que sobreviven a varias recolecciones se trasladan a generaciones superiores.
+
+Esta estrategia reduce el tiempo dedicado a la recolección, ya que se trabaja con áreas de memoria más pequeñas. 
+Es una versión modificada del método por copia, pero aplicada solo a una generación del montículo.
+
+
+5. Recolección incremental
+Dado que la recolección puede ser costosa en tiempo, especialmente en sistemas en tiempo real, los métodos incrementales buscan que el recolector trabaje en paralelo 
+con la ejecución del programa. Se clasifican los objetos en tres colores: blancos (no visitados), grises (visitados pero no completamente explorados) y negros (completamente procesados).
+
+El proceso avanza mientras existan objetos grises. Cuando ya no hay, los objetos blancos se consideran basura y se liberan. El sistema debe permitir que el programa, 
+al crear nuevos objetos o modificar referencias, actualice correctamente los colores. Esta técnica es una versión paralela del marcado y barrido, 
+diseñada para reducir las interrupciones del programa principal.
 
 
 
