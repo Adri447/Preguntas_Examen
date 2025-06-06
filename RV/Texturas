@@ -39,3 +39,9 @@ que a dos píxeles consecutivos se le asocien texels alejados, produciendo alias
 serían los Mipmaps, que consisten en tener versiones de la textura en tamaños inferiores
 
 
+
+/*
+¿Qué es una textura Cubemap? Desarrolle el Vertex Shader y el Fragment Shader que permite generar un Skybox 
+(una imagen de fondo en 360º) por medio de una textura Cubemap
+*/
+
