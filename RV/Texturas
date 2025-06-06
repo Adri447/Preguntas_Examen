@@ -1,1 +1,41 @@
 
+
+/*
+¿Qué es una textura? ¿Qué tipos de texturas existen? ¿Como se crean las texturas?
+¿Como se asigna su contenido? ¿Como se aplican las texturas?
+*/
+
+Una textura es la aplicación de una imagen a una primitiva geométrica. Los puntos de las
+texturas son los texels.
+
+Según cómo esté estructurada, hay varios tipos de texturas:
+- Texturas 1D: es un vector de texels en una dimensión.
+- Texturas 2D: matriz de textels.
+- Texturas 3D: matriz tridimensional de texels (colección de imágenes).
+- Texturas Cubemap: es un conjunto de 6 superficies cuadradas distribuidas como las caras de un cubo.
+
+Para trabajar con texturas, se definen objetos texturas que definen buffers de datos que se
+almacenan en la tarjeta gráfica. Cada objeto textura se identifica mediante un número.
+
+Se reservan/crean los identificadores de texturas mediante la función glGenTextures,
+indicándole el número de identificadores que se deseen y un array donde los almacene.
+Después, se define el tipo de textura que tendrá un identificador a través de la función
+glBindTexture. Por último, para cargar una textura a un identificador, se utiliza la función
+glTexImage_D según el tipo de textura.
+
+También se puede asignar las texturas copiando los valores del color buffer con
+glCopyTexImage_D, indicando desde qué posición tiene que copiar. Otra forma puede ser
+cargar sólo un trozo de una textura sobre la ya cargada con glSubTexImage_D, indicando desde
+qué posición empieza a sobrescribir.
+
+Los puntos en las texturas se identifican con coordenadas (s, t, r, q) que parten desde la esquina
+inferior izquierda. Para aplicar una textura sobre una primitiva, se calculan las coordenadas de
+texturas correspondientes a cada píxel. Dado que los tamaños de la primitiva y la textura
+pueden ser diferentes, se filtrará la textura para aumentarla o encogerla. El proceso de filtrado
+se puede configurar con las funciones glTexParameter.
+
+En caso de que los tamaños de la primitiva y la textura sean muy diferentes, podría suceder
+que a dos píxeles consecutivos se le asocien texels alejados, produciendo aliasing. Una solución
+serían los Mipmaps, que consisten en tener versiones de la textura en tamaños inferiores
+
+
