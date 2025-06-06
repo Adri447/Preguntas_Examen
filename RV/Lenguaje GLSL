@@ -1,0 +1,32 @@
+
+
+/*
+¿Qué es un Vertex Buffer Object? ¿Y un Vertex Array Object? Describa la forma de crearlos y configurarlos
+*/
+
+- Vertex Buffer Object
+Un VBO es una estructura de datos que puede almacenar en la memoria de la GPU diferentes
+tipos de información, según qué tipo de buffer se le asigna al activarlo como, por ejemplo:
+almacenar atributos de los vértices o almacenar una lista de índices a vértices.
+
+Se crean, desde el código para la CPU, a través de la función glGenBuffers, donde se le pasa el
+número de buffers a crear y los identificadores de los buffers. Ya creado un VBO, para poder
+utilizarlo es necesario activarlo con la función glBindBuffer, donde se le indica qué tipo de
+buffer será. Por último, para almacenar los datos se utiliza la función glBufferData, indicándole
+el tipo de buffer a llenar y dónde están los datos que va a guardar.
+
+- Vertex Array Object
+Cuando ya estén creados los VBOs y almacenados los datos de los vértices, el siguiente paso es
+crear los Vertex Array Objects. Éstos son estructuras de datos que definen el mapeo entre los
+atributos (almacenados en los VBOs) y los nombres de las entradas de los shaders.
+A través de la función glGenVertexArrays podemos crear un cierto número de VAOs y obtener
+sus identificadores. Para usar un VAO, se activa primero con la función glBindVertexArray.
+Para definir un atributo perteneciente a un VAO se usa la función glVertexAttribPointer,
+indicándole el índice, cuantos datos habrá por atributo y el tipo que será.
+Para asignar la posición de una variable de entrada, se utiliza la función glBindAttribLocation,
+indicándole el shader, la posición del atributo y el nombre de la variable
+
+
+/*
+Tipos de Datos
+*/
