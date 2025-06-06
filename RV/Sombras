@@ -36,3 +36,54 @@ si no, es necesario cargarlo mediante un RenderBuffer. El tamaño de los buffers
 
 Una vez vinculados, se activa el FBO. Por último, se indica que el FBO será el buffer de dibujo mediante glDrawBuffers. 
 Después hay que devolver la salida del renderizado a la pantalla.
+
+
+
+
+/*
+Describa brevemente en que consiste el algoritmo básico de generación de sombras denominado ShadowMap
+*/
+
+Para poder añadir sombras a un dibujo, es necesario conocer si cada píxel de la imagen se encuentra en sombra o no, 
+ya que, si está en sombra, sólo será iluminado por la luz ambiental.
+
+El algoritmo ShadowMap consiste en generar previamente una imagen de la escena desde el punto de vista del 
+foco de luz y, en lugar de llevarla a la pantalla, se almacena en un Frame Buffer, guardando como textura 
+la profundidad de los píxeles.
+Para generar esa imagen, se utilizan las matrices de View y Projection de la luz.
+Según el origen de la luz, si es un foco, se debe configurar como una proyección en perspectiva, pero si son 
+luces direccionales, se calculará como una proyección ortográfica.
+
+Para saber si un punto del modelo está en sombra, a través sus coordenadas clip en el sistema de la luz, 
+se obtiene la distancia (profundidad) hasta el origen de luz. Después, tomando la imagen generada previamente 
+desde el punto de vista de la luz, si la textura de la imagen, en el píxel donde se situaría el punto, 
+tiene un valor menor, significa que hay un objeto más cercano a la luz, por tanto, el punto estará en sombra.
+
+Sin embargo, el principal problema de este método es el aliasing. Ya que calculamos la sombra
+a partir de una imagen (textura) generada desde la luz, un punto en la textura puede abarcar
+en el modelo a muchos más puntos, quedando un pixelado en los límites de la sombra muy evidente.
+
+
+
+/*
+Describa brevemente en qué consiste el algoritmo de generación de sombras denominado Shadow Volumes.
+*/
+
+El algoritmo Shadow Volumes es una técnica de generación de sombras que evita el aliasing proyectando la silueta 
+de los objetos para formar volúmenes que representan el área que queda en sombra. Utiliza el Stencil Buffer para
+determinar si un punto está dentro de un volumen de sombra. Para ello, se proyectan los bordes del objeto desde la luz, 
+creando un volumen de sombra. Luego, desde el punto de vista del observador, se lanza un rayo hacia cada píxel y 
+se lleva un contador que se incrementa al entrar en un volumen y se decrementa al salir. 
+Si el contador es distinto de cero, el píxel está en sombra.
+
+El proceso se divide en tres pasos:
+
+1) Se renderiza la escena normalmente, guardando la componente ambiental en un buffer y la difusa + especular en otro.
+2) Se activan las operaciones del Stencil Buffer para marcar las zonas de sombra al renderizar los volúmenes. 
+Las caras frontales aumentan el contador, y las traseras lo disminuyen.
+3) Se dibuja una pantalla completa. Solo se muestran las zonas que no están en sombra (stencil = 0), 
+combinando los dos buffers anteriores.
+
+Es una técnica precisa y libre de aliasing, aunque más compleja y costosa computacionalmente que otras como Shadow Mapping.
+
+
