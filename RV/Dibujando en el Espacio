@@ -1,0 +1,41 @@
+
+
+
+/*
+El primer paso del proceso de renderizado consiste en transformar las coordenadas de los vértices 
+(expresadas en un sistema de coordenadas local) en coordenadas de Clipping Volume.
+¿Como se configura esta transformación? ¿Qué matrices entran en juego? 
+Describa los dos tipos de proyecciones utilizados en OpenGL
+*/
+
+Generalmente, las coordenadas de los vértices se expresan inicialmente en un sistema de
+coordenadas propio del objeto al que pertenecen. Cuando se añaden más objetos al modelo,
+es necesario que todos los objetos estén ubicados en un mismo sistema de coordenadas, que
+llamaremos coordenadas del modelo. Estando todas las figuras representadas con el mismo
+sistema de coordenadas, ya se puede realizar la proyección creando el volumen clip del modelo
+desde un punto de vista que será el observador.
+
+Para realizar las transformaciones entre los diferentes sistemas de coordenadas, se utilizan las
+siguientes matrices:
+- Model: esta matriz se utiliza para transformar las coordenadas locales de un objeto a
+coordenadas del modelo. Sitúa el objeto en una posición del modelo.
+- View: esta matriz se utiliza para transformar el sistema de coordenadas del modelo a otro
+sistema de coordenadas en el que el observador es el origen de coordenadas, lo transforma
+a coordenadas de observador.
+- Projection: esta matriz, a partir de las coordenadas de observador, obtiene las coordenadas
+en el clipping volumen.
+
+Según como sea la proyección, la matriz será de una forma u otra.
+
+La proyección convierte el volumen visible del modelo en el volumen clip. Según como lo haga:
+- Proyección ortográfica: consiste en transformar un volumen de forma rectangular en el
+volumen clip. Supone una transformación de escalas muy sencilla, pero provocaría que los
+objetos se vean del mismo tamaño estén cerca o lejos.
+
+- Proyección en perspectiva: consiste en transformar el espacio que se ve desde el
+observador con un cierto ángulo de visión en el volumen clip. El volumen tendría una forma
+similar a un tronco de pirámide y provocaría que los objetos más cercanos se vean de mayor
+tamaño que los más lejanos.
+
+
+
