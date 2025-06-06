@@ -1,0 +1,27 @@
+
+/*
+Shader de Geometría
+*/
+
+Es un shader opcional en el proceso de renderizado. Se ejecuta por cada primitiva generada en
+la etapa de ensambado y su objetivo es realizar cambios sobre ella. Algunos de estos cambios
+pueden ser:
+
+- Eliminar primitivas.
+- Incorporar más nivel de detalle sustituyendo una primitiva por un número mayor de
+primitivas e interpolando los valores para los nuevos vértices.
+- Introducir nuevas propiedades en los vértices, calculadas en base a la información
+geométrica. No puede realizarse en el VertexShader ya que ahí no se trata información de
+vértices vecinos.
+- Sustituir la primitiva por otra diferente.
+
+Tiene como entrada un array que almacena la información de cada vértice de la primitiva. Para
+cada vértice, la estructura recibida indica: su posición, el tamaño del punto y distancia a los
+planos clip (si esta función está activada).
+Su salida predefinida son las nuevas primitivas.
+
+Su funcionamiento se basa en dos funciones predefinidas:
+- EmitVertex: genera los vértices de las nuevas primitivas. Se guarda como vértice el valor que
+esté en la salida del shader (el valor de gl_position).
+- EndPrimitive: indica que los vértices generados anteriormente forman una primitiva. Los
+siguientes vértices que puedan generarse pertenecerán a otra primitiva
