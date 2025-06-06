@@ -41,7 +41,9 @@ serían los Mipmaps, que consisten en tener versiones de la textura en tamaños 
 
 
 /*
-¿Qué es una textura Cubemap? Desarrolle el Vertex Shader y el Fragment Shader que permite generar un Skybox 
+¿Qué es una textura CUBEMAP? ¿Cómo se crea y se asigna su contenido? ¿Cómo se utiliza
+en los shaders? 
+Desarrolle el Vertex Shader y el Fragment Shader que permite generar un Skybox 
 (una imagen de fondo en 360º) por medio de una textura Cubemap
 */
 
