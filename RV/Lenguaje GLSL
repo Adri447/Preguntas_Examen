@@ -52,5 +52,12 @@ indicándole el shader, la posición del atributo y el nombre de la variable
 
 
 /*
+Describa como se utilizan los operadores aritméticos de suma, resta, producto y división sobre 
+los tipos de datos vectoriales y matriciales en el lenguaje GLSL.
+*/
+
+
+
+/*
 Tipos de Datos
 */
