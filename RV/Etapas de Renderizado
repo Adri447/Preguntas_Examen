@@ -57,6 +57,10 @@ conoceremos como Color Buffer.
 
 
 
+/*
+Describa la etapa de “Rasterización e interpolación” que forma parte del proceso de renderizado. 
+¿Qué funciones se realizan en esta etapa? Describa brevemente como se desarrollan estas funciones
+*/
 
 
 /*
