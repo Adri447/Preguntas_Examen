@@ -1,0 +1,55 @@
+
+
+
+/*
+Describa brevemente las etapas del proceso de renderizado utilizado en OpenGL. (Un párrafo para cada etapa)
+*/
+
+Etapas del proceso de renderizado:
+- VertexShader: se ejecuta sobre cada vértice de forma independiente. Utiliza atributos de
+entrada asociados a cada vértice y genera como salida la posición del vértice en
+coordenadas clip.
+• Entrada: vértices.
+• Salida: transformed vértices, transform feedback
+
+- Ensamblado de primitivas: es una etapa no programable. Recibe la indicación de las
+primitivas a dibujar y los atributos de los vértices que las forman, generados por el
+VertexShader. Además, detecta si están ocultos o fuera del área de dibujo.
+• Entrada: transformed vértices, primitive/patch conectivity.
+• Salida: primitives, patches
+
+- Teselado: recibe los datos de un parche y genera nuevas primitivas. Se divide en:
+    - Control de teselado (TCS): recibe los vértices del patch y genera los valores de los
+      vértices de las primitivas que se crearán.
+    - Generación de primitivas (TPG): genera las primitivas en un espacio de coordenadas
+      llamado espacio de parámetros, sus coordenadas se denominan u y v, que van de 0 a 1.
+    - Evaluación de teselado (TES): transforma las coordenadas del espacio de parámetros
+      a coordenadas de posición de los vértices (clip).
+• Entrada: patches.
+• Salida: primitives, transform feedback.
+
+- GeometryShader: es una etapa opcional. Recibe primitivas ya ensambladas y permite realizarç
+modificaciones sobre ellas. La información adyacente debe tratarse dentro de este shader
+• Entrada: primitives.
+• Saldia: primitives,transform feedback
+
+- Rasterización e interpolación: es una etapa no programable. Estudia qué vértices quedan
+dentro del clipping volumen, desechando aquellos que estén fuera, y adaptando las
+primitivas que estén parcialmente fuera a través de nuevos vértices. Después, se identifican
+qué pixeles forman parte de la primitiva a dibujar según la ubicación del centro del píxel.
+• Entrada: primitives.
+• Salida: fragments
+
+- FragmentShader: Etapa programable y no opcional, se ejecuta por cada píxel dentro de la primitiva, 
+recibiendo los valores interpolados para el píxel. Genera el color asociado al píxel.
+• Entrada: fragments.
+• Salida: shaded fragments
+
+- Operaciones de raster: Etapa no programable que combina los diferentes fragmentos para generar 
+la versión final de la imagen. Algunos de los procesos incluidos en esta etapa 
+pueden ser ejecutados antes del FragmentShader por motivos de eficiencia.
+• Entrada: shaded fragments.
+• Salida: pixels
+
+El proceso de renderizado genera al final el contenido de la imagen en una estructura que
+conoceremos como Color Buffer.
