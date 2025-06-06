@@ -1,6 +1,7 @@
 
 /*
-Shader de Geometría
+¿Cual es la función del Shader de Geometría? ¿Cuales son sus entradas y salidas predefinidas? 
+¿Cuales son sus funciones predefinidas?
 */
 
 Es un shader opcional en el proceso de renderizado. Se ejecuta por cada primitiva generada en
