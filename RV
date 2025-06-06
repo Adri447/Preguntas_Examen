@@ -385,21 +385,19 @@ en el pipeline de renderizado.
 Subrutinas de GLSL
 */
 
-Una subrutina es un mecanismo que permite seleccionar una función basado en el valor de
-una variable uniforme. Esto sucede en tiempo de ejecución sin necesidad de modificar el
-programa ni de instrucciones if.
+Una subrutina es un mecanismo que permite seleccionar una función basado en el valor de una variable uniforme. 
+Esto sucede en tiempo de ejecución sin necesidad de modificar el programa, ni de instrucciones if.
 
-Para crear una subrutina se utiliza la instrucción subroutine seguida de la declaración del tipo
-de función. Después, para crear una variable uniforme que contenga un puntero a una
-subrutina se utiliza la instrucción subroutine uniform subrutina variable.
+Para crear una subrutina se utiliza la instrucción subroutine seguida de la declaración del tipo de función. 
+Después, para crear una variable uniforme que contenga un puntero a una subrutina se utiliza la instrucción 
+subroutine uniform nombresubrutina variable.
 
 Para crear funciones que desarrolla una subrutina, se incluye la instrucción subroutine (subrutinas)
 y a continuación la declaración de la función. La subrutina se utiliza en el código como si fuera una función.
 
 La selección de la subrutina en el programa OpenGL se realiza asignando el valor a la variable
 uniforme. Primero se obtiene la posición de la función con glGetSubroutineIndex y, después, a
-la variable uniforme de tipo subrutina se le asigna el valor obtenido mediante
-glUniformSubroutine_
+la variable uniforme de tipo subrutina se le asigna el valor obtenido mediante glUniformSubroutinesuiv.
 
 
 
