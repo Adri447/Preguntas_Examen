@@ -275,36 +275,6 @@ siguientes vértices que puedan generarse pertenecerán a otra primitiva
 
 
 
-/*
-Describa brevemente en que consiste el algoritmo básico de generación de sombras denominado ShadowMap
-*/
-
-Para poder añadir sombras a un dibujo, es necesario conocer si cada píxel de la imagen se
-encuentra en sombra o no, ya que, si está en sombra, sólo será iluminado por la luz ambiental.
-
-El algoritmo básico para generar sombras es el ShadowMap, que consiste en generar
-previamente una imagen de la escena desde el punto de vista del foco de luz y, en lugar de
-llevarla a la pantalla, se almacena en un Frame Buffer, guardando como textura la profundidad
-de los píxeles.
-
-Para generar esa imagen, es necesario tener la matriz LightView que transforma de
-coordenadas de modelo a coordenadas de observador, siendo éste la luz, y la matriz
-LightProjection, que hará la transformación a coordenadas clip. 
-Según el origen de la luz, si es un foco, se debe configurar como una proyección en perspectiva, 
-pero si son luces direccionales, se calculará como una proyección ortográfica.
-
-Para saber si un punto del modelo está en sombra, a través sus coordenadas clip en el sistema
-de la luz, se obtiene la distancia (profundidad) hasta el origen de luz. Después, tomando la
-imagen generada previamente desde el punto de vista de la luz, si la textura de la imagen, en
-el píxel donde se situaría el punto, tiene un valor menor (una profundidad menor), significa que
-hay un objeto más cercano a la luz impidiendo que le llegue esa luz y, por tanto, el punto estará
-en sombra.
-
-Sin embargo, el principal problema de este método es el aliasing. Ya que calculamos la sombra
-a partir de una imagen (textura) generada desde la luz, un punto en la textura puede abarcar
-en el modelo a muchos más puntos, quedando un pixelado en los límites de la sombra muy evidente.
-
-
 
 /*
 El primer paso del proceso de renderizado consiste en transformar las coordenadas de los vértices 
@@ -357,46 +327,6 @@ texto. Después se compilan y quedan listos para ser añadidos al programa gráf
 obligatorios tanto el VertexShader como el FragmentShader para poder instalar el programa
 en el pipeline de renderizado.
 
-
-
-/*
-Subrutinas de GLSL
-*/
-
-Una subrutina es un mecanismo que permite seleccionar una función basado en el valor de una variable uniforme. 
-Esto sucede en tiempo de ejecución sin necesidad de modificar el programa, ni de instrucciones if.
-
-Para crear una subrutina se utiliza la instrucción subroutine seguida de la declaración del tipo de función. 
-Después, para crear una variable uniforme que contenga un puntero a una subrutina se utiliza la instrucción 
-subroutine uniform nombresubrutina variable.
-
-Para crear funciones que desarrolla una subrutina, se incluye la instrucción subroutine (subrutinas)
-y a continuación la declaración de la función. Para usar una subrutina se utiliza la variable uniforme  
-como si fuera una función.
-
-La selección de la subrutina en el programa OpenGL se realiza asignando el valor a la variable
-uniforme. Primero se obtiene la posición de la función con glGetSubroutineIndex y, después, a
-la variable uniforme se le asigna el valor obtenido mediante glUniformSubroutinesuiv.
-
-
-
-/*
-¿Qué es un Frame Buffer Object? Describa la forma de crearlo y utilizarlo
-*/
-
-Un FrameBuffer Object (FBO) es una estructura de datos que describe la salida del proceso de
-renderizado y contiene enlaces al ColorBuffer, DepthBuffer y StencilBuffer. 
-Por defecto, OpenGL crea un FBO con identificador 0 que asocia a la pantalla.
-
-Para crear un FBO se utiliza la función glGenFramebuffers, indicándole el número de FBOs a
-crear y el array donde están los identificadores. Para activarlo, se utiliza glBindFramebuffer.
-
-Para dirigir el proceso de renderizado a memoria, se crea un FBO y los buffers que estén vinculados a él. 
-Para vincular estos buffers al FBO, se utiliza glFramebufferTexture2D si el DepthBuffer está cargado como textura, 
-si no, es necesario cargarlo mediante un RenderBuffer. El tamaño de los buffers debe ser el mismo. 
-
-Una vez vinculados, se activa el FBO. Por último, se indica que el FBO será el buffer de dibujo mediante glDrawBuffers. 
-Después hay que devolver la salida del renderizado a la pantalla.
 
 
 
