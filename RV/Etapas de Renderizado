@@ -53,3 +53,36 @@ pueden ser ejecutados antes del FragmentShader por motivos de eficiencia.
 
 El proceso de renderizado genera al final el contenido de la imagen en una estructura que
 conoceremos como Color Buffer.
+
+
+
+
+
+
+/*
+Dentro del Pipeline de renderizado, la etapa de ensamblado de primitivas se lanza por medio
+de los comandos glDraw...(). ¿Cuáles son las diferentes primitivas geométricas incluidas en
+OpenGL? ¿Cómo se distingue la cara frontal de la cara posterior de los polígonos?
+*/
+
+
+Las primitivas incluidas en OpenGL son:
+- Punto, compuesto por un único vértice.
+- Línea, que une dos vértices.
+- Triángulo, formado por tres vértices. Es la forma de primitiva más utilizada.
+- Parche. No tienen un significado geométrico definido. Es un tipo especial de primitiva que
+se utiliza en los shaders de teselado, donde se convierte la información del parche en un
+conjunto de primitivas geométricas.
+
+Salvo las primitivas de tipo parche, que se convierten en otras primitivas tras la etapa de
+teselado, todas pueden ser tratadas directamente por el Fragment Shader, a no ser que estén
+definidas como primitivas de adyacencia. Estas primitivas son aquellas que comparten aristas
+con otras primitivas, pero una de ellas se observa desde su cara frontal y la otra desde su cara
+posterior.
+
+Para distinguir entre la cara frontal y posterior de una primitiva, se obtiene el vector normal de
+la primitiva. Este es un vector perpendicular a la superficie de la primitiva, y si su dirección en
+el eje z es positiva, entonces el triángulo está viéndose desde su cara frontal, si es negativa,
+desde su cara posterior.
+De forma más simple, la cara que se ve es la frontal si los vértices que componen la primitiva,
+en el momento de representarse, siguen un recorrido en sentido antihorario.
