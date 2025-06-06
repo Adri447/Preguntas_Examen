@@ -1,7 +1,5 @@
 
 
-
-
 /*
 Describa el modelo de iluminación de Phong. ¿Cuántos tipos de luz utiliza? 
 ¿Como se calcula el efecto de cada tipo de luz?
@@ -36,3 +34,16 @@ observador.
 Los cálculos para obtener el color final se hacen en el FragmentShader, por tanto, es necesario
 indicarle mediante variables uniformes de entrada las direcciones de los tipos de luz y el color
 del material del objeto para cada tipo de luz.
+
+
+
+
+/*
+Desarrolle el código del VertexShader y del FragmentShader que implementan el modelo de iluminación de Phong.
+*/
+
+
+
+
+
+
