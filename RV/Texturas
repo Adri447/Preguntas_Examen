@@ -41,6 +41,13 @@ serían los Mipmaps, que consisten en tener versiones de la textura en tamaños 
 
 
 /*
+Describa el proceso de creación y asignación de contenido de una textura 2D. 
+¿Como se obtiene el contenido de las texturas en el Fragment Shader?.
+*/
+
+
+
+/*
 ¿Qué es una textura CUBEMAP? ¿Cómo se crea y se asigna su contenido? ¿Cómo se utiliza
 en los shaders? 
 Desarrolle el Vertex Shader y el Fragment Shader que permite generar un Skybox 
