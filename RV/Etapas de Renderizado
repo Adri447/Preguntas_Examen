@@ -63,6 +63,17 @@ Describa la etapa de “Rasterización e interpolación” que forma parte del p
 */
 
 
+
+
+/*
+Se conoce como “Operaciones de raster” a las funciones realizadas en la última etapa del renderizado. 
+Indique cuales son estas operaciones y descríbalas brevemente.
+*/
+
+
+
+
+
 /*
 Shaders
 */
