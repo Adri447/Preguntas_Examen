@@ -26,3 +26,15 @@ Su funcionamiento se basa en dos funciones predefinidas:
 esté en la salida del shader (el valor de gl_position).
 - EndPrimitive: indica que los vértices generados anteriormente forman una primitiva. Los
 siguientes vértices que puedan generarse pertenecerán a otra primitiva
+
+
+
+
+/*
+Desarrolle un shader de geometría que sustituya un triángulo por tres triángulos utilizando el punto medio 
+de los vértices del triángulo original como aparece en la figura.
+*/
+
+
+
+
