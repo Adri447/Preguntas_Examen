@@ -1,4 +1,22 @@
 
+/*
+Describa el proceso de creación y uso de un programa gráfico y de los shaders que lo forman
+*/
+
+En un programa gráfico se distinguen dos partes principales:
+- Las ejecutadas por la CPU, que utilizan funciones de OpenGL en C/C++.
+- Las ejecutadas por la tarjeta gráfica, los shaders. Escritos en GLSL, serán cargados al programa.
+
+Desde la parte ejecutada por la CPU, se crean los shaders y se les asigna el código en modo
+texto. Después se compilan y quedan listos para ser añadidos al programa gráfico. Serán
+obligatorios tanto el VertexShader como el FragmentShader para poder instalar el programa
+en el pipeline de renderizado.
+
+
+
+Falta INFO por poner
+
+
 
 /*
 ¿Qué es un Vertex Buffer Object? ¿Y un Vertex Array Object? Describa la forma de crearlos y configurarlos
