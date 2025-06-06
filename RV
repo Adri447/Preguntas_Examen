@@ -393,11 +393,17 @@ Después, para crear una variable uniforme que contenga un puntero a una subruti
 subroutine uniform nombresubrutina variable.
 
 Para crear funciones que desarrolla una subrutina, se incluye la instrucción subroutine (subrutinas)
-y a continuación la declaración de la función. La subrutina se utiliza en el código como si fuera una función.
+y a continuación la declaración de la función. Para usar una subrutina se utiliza la variable uniforme  
+como si fuera una función.
 
 La selección de la subrutina en el programa OpenGL se realiza asignando el valor a la variable
 uniforme. Primero se obtiene la posición de la función con glGetSubroutineIndex y, después, a
-la variable uniforme de tipo subrutina se le asigna el valor obtenido mediante glUniformSubroutinesuiv.
+la variable uniforme se le asigna el valor obtenido mediante glUniformSubroutinesuiv.
+
+El orden en que se asignan las subrutinas a las variables uniformes debe coincidir con el orden en que 
+fueron declaradas en el shader. Si el programa contiene varias variables uniformes de tipo subrutina, 
+con la función glGetSubroutineUniformLocation() se obtiene la ubicación de cada una, para así 
+construir el array de asignación de forma correcta.
 
 
 
