@@ -17,6 +17,12 @@ en el pipeline de renderizado.
 Falta INFO por poner
 
 
+/*
+Describa la estructura básica de un shader ¿Qué tipos de declaraciones se pueden encontrar en estos programas? 
+Descríbalas brevemente. 
+*/
+
+
 
 /*
 ¿Qué es un Vertex Buffer Object? ¿Y un Vertex Array Object? Describa la forma de crearlos y configurarlos
