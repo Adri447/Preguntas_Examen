@@ -36,5 +36,11 @@ de los vértices del triángulo original como aparece en la figura.
 */
 
 
+/*
+Desarrolle el código de un shader de geometría que permita dibujar point sprites, es decir,
+que sustituya los puntos generados por una primitiva GL_POINTS por un cuadrado con una textura.
+*/
+
+
 
 
