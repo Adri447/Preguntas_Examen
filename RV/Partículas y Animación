@@ -26,3 +26,10 @@ transform feedback con la función glBeginTransformFeedback.
 Cuando se lancen las primitivas de dibujo, las salidas del VertexShader se almacenarán en los
 buffers indicador del TFO. Para finalizar el proceso de transform feedback se utiliza el comando
 glEndTransformFeedback
+
+
+
+/*
+¿Qué es un Transform Feedback Object? Describa como puede utilizarse para desarrollar sistemas de partículas 
+con la técnica conocida como “buffer ping-pong”.
+*/
