@@ -37,6 +37,11 @@ del material del objeto para cada tipo de luz.
 
 
 
+/*
+Describa el modelo de iluminación de Phong, indicando las ecuaciones que permiten calcular
+el efecto de cada tipo de luz. Describa algunas formas de optimizar este modelo de iluminación.
+*/
+
 
 /*
 Desarrolle el código del VertexShader y del FragmentShader que implementan el modelo de iluminación de Phong.
