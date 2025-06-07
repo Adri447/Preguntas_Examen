@@ -4,17 +4,22 @@ Describa el proceso de creación y uso de un programa gráfico y de los shaders 
 */
 
 En un programa gráfico se distinguen dos partes principales:
+
 - Las ejecutadas por la CPU, que utilizan funciones de OpenGL en C/C++.
 - Las ejecutadas por la tarjeta gráfica, los shaders. Escritos en GLSL, serán cargados al programa.
 
-Desde la parte ejecutada por la CPU, se crean los shaders y se les asigna el código en modo
-texto. Después se compilan y quedan listos para ser añadidos al programa gráfico. Serán
-obligatorios tanto el VertexShader como el FragmentShader para poder instalar el programa
-en el pipeline de renderizado.
+Desde la parte ejecutada por la CPU, se crean los shaders con glCreateShader y se les asigna el código en modo texto
+mediante la función glShaderSource. A continuación, se compilan con glCompileShader, y se debe comprobar si la compilación 
+ha sido exitosa mediante glGetShaderiv. En caso de error, es posible consultar el mensaje de error con glGetShaderInfoLog.
 
+Una vez compilados correctamente, los shaders se añaden a un programa gráfico utilizando glAttachShader. 
+Este programa se crea con glCreateProgram, y al menos debe incluir un Vertex Shader y un Fragment Shader 
+para que sea válido. Después de adjuntar los shaders, se procede al linkado con glLinkProgram.
 
+Si el linkado es exitoso, el programa puede instalarse en el pipeline de renderizado mediante la función glUseProgram.
+Finalmente, es buena práctica liberar los recursos ocupados eliminando los shaders con glDeleteShader y, 
+al final del uso, eliminar también el programa gráfico con glDeleteProgram.
 
-Falta INFO por poner
 
 
 /*
