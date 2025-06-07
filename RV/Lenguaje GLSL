@@ -90,3 +90,35 @@ los tipos de datos vectoriales y matriciales en el lenguaje GLSL.
 /*
 Describa cuales son los tipos de datos utilizados en el lenguaje GLSL. 
 */
+
+El lenguaje GLSL incluye varios tipos de datos diseñados para facilitar el trabajo gráfico en la GPU. 
+Estos se dividen en diferentes categorías:
+
+1) Tipos básicos:
+
+void: usado en funciones que no devuelven valor.
+bool: valores lógicos (true o false).
+int: enteros con signo de 32 bits.
+uint: enteros sin signo de 32 bits (ej: 100u).
+float: números en coma flotante de 32 bits.
+double: números en coma flotante de 64 bits (ej: 0.5LF).
+
+2) Tipos vectoriales:
+Representan vectores de 2, 3 o 4 componentes:
+vec2, vec3, vec4 para float
+ivec, uvec, bvec, dvec para int, uint, bool y double respectivamente
+Se puede acceder a sus componentes con x, y, z, w | r, g, b, a | s,t,p,q.
+
+3) Tipos matriciales:
+Usados para transformaciones, pueden ser cuadradas (mat2, mat3, mat4) o rectangulares (mat2x3, mat4x2, etc.), 
+en versiones de float y double.
+
+4) Arrays:
+Se pueden declarar arrays de cualquier tipo.
+
+5) Estructuras:
+Permiten agrupar diferentes variables bajo un mismo tipo. Ejemplo:
+
+6) Tipos opacos:
+Usados para manejar objetos gráficos complejos como texturas (sampler2D, samplerCube) e imágenes (image2D). 
+No se accede a sus datos directamente, sino mediante funciones específicas.
