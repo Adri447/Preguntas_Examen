@@ -17,8 +17,7 @@ Este programa se crea con glCreateProgram, y al menos debe incluir un Vertex Sha
 para que sea válido. Después de adjuntar los shaders, se procede al linkado con glLinkProgram.
 
 Si el linkado es exitoso, el programa puede instalarse en el pipeline de renderizado mediante la función glUseProgram.
-Finalmente, es buena práctica liberar los recursos ocupados eliminando los shaders con glDeleteShader y, 
-al final del uso, eliminar también el programa gráfico con glDeleteProgram.
+Finalmente, para liberar los recursos se eliminan los shaders con glDeleteShader y el programa gráfico con glDeleteProgram.
 
 
 
