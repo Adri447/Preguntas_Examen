@@ -5,22 +5,21 @@ de teselado. ¿Qué funciones realiza cada etapa del proceso de teselado?
 ¿Qué entradas y salidas utiliza cada etapa? ¿Cómo se configura el nivel de teselado?
 */
 
-Es una etapa opcional del proceso de renderizado, pero si un programa contiene esta etapa,
-sólo se pueden renderizar primitivas de tipo parche. Esta etapa se divide en tres fases:
+Es una etapa opcional del proceso de renderizado que recibe como entrada los datos de un parche y genera como salida 
+nuevas primitivas geométricas que pueden ser puntos, líneas o triángulos.
+Esta etapa se divide en tres fases:
 
-- Control de teselado (TCS): recibe los vértices del parche y con su información genera los
-valores de los vértices de las primitivas que se crearán.
+- Control de teselado (TCS): recibe los vértices del patch y genera como salida la configuración de la siguiente etapa 
+y los valores de los vértices de las primitivas a crear.
 
-- Generación de primitivas (TPG): recibe una lista con los vértices, obtenidos de la fase
-anterior, de la primitiva que va a crear. Las primitivas que genera las sitúa en un espacio de
-coordenadas llamado espacio de parámetros, donde sus coordenadas se denominan u y v,
-que van de 0 a 1.
+- Generación de primitivas (TPG): Esta fase no programable recibe una lista con los vértices de la primitiva que va a crear, 
+obtenidos de la fase anterior. Las primitivas que genera las sitúa en un espacio de coordenadas llamado espacio de parámetros, 
+donde sus coordenadas se denominan u y v, que van de 0 a 1.
 
-- Evaluación de teselado (TES): recibe las coordenadas de cada vértice (tessCoord) en el
-espacio de parámetros y los atributos de los parches (gl_in) y los transforma a coordenadas
-de posición de los vértices (clipping volume).
+- Evaluación de teselado (TES): recibe las coordenadas de cada vértice (TessCoord) en el espacio de parámetros y 
+los atributos de los parches (gl_in) y los transforma a coordenadas de posición de los vértices (clipping volume).
 
-El nivel de teselado se puede configurar como variables de entrada uniforme del TPG que
-indiquen el número de puntos de control que tendrá una superficie. Pero también puede
-calcularse internamente según la profundidad por ejemplo (indicando en la entrada los niveles
-máximo y mínimo de profundidad)
+Los niveles de teselado se configuran en el TCS mediante las variables de salida gl_TessLevelOuter[] y gl_TessLevelInner[], 
+que indican cuántas subdivisiones se deben hacer a lo largo de los bordes del parche.
+Estos valores pueden establecerse como constantes o calcularse dinámicamente dentro del shader, por ejemplo, 
+en función de la distancia del parche a la cámara, la profundidad. 
