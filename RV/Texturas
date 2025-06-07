@@ -5,39 +5,54 @@
 ¿Como se asigna su contenido? ¿Como se aplican las texturas?
 */
 
-Una textura es la aplicación de una imagen a una primitiva geométrica. Los puntos de las
-texturas son los texels.
+Una textura es la aplicación de una imagen a una primitiva geométrica. Los puntos de las texturas son los texels.
 
 Según cómo esté estructurada, hay varios tipos de texturas:
 - Texturas 1D: es un vector de texels en una dimensión.
-- Texturas 2D: matriz de textels.
+- Texturas 2D: matriz bidimensional de textels.
 - Texturas 3D: matriz tridimensional de texels (colección de imágenes).
 - Texturas Cubemap: es un conjunto de 6 superficies cuadradas distribuidas como las caras de un cubo.
 
-Para trabajar con texturas, se definen objetos texturas que definen buffers de datos que se
-almacenan en la tarjeta gráfica. Cada objeto textura se identifica mediante un número.
+- Creacion:
+Para trabajar con texturas, se definen objetos texturas que definen buffers de datos que se almacenan en la 
+tarjeta gráfica. Cada objeto textura se identifica mediante un número.
+Se reservan los identificadores de texturas mediante la función glGenTextures, indicándole el número de identificadores 
+que se deseen y un array donde los almacene. Después, se define el tipo de textura con la función glBindTexture.
 
-Se reservan/crean los identificadores de texturas mediante la función glGenTextures,
-indicándole el número de identificadores que se deseen y un array donde los almacene.
-Después, se define el tipo de textura que tendrá un identificador a través de la función
-glBindTexture. Por último, para cargar una textura a un identificador, se utiliza la función
-glTexImage_D según el tipo de textura.
+- Asignacion:
+Para cargar una textura a un identificador, se utiliza la función glTexImageXD según el tipo de textura.
+También se puede asignar las texturas copiando los valores del color buffer con glCopyTexImageXD, 
+indicando desde qué posición tiene que copiar. Otra forma puede ser cargar sólo un trozo de una textura sobre la ya 
+cargada con glSubTexImageXD, indicando desde qué posición empieza a sobrescribir.
 
-También se puede asignar las texturas copiando los valores del color buffer con
-glCopyTexImage_D, indicando desde qué posición tiene que copiar. Otra forma puede ser
-cargar sólo un trozo de una textura sobre la ya cargada con glSubTexImage_D, indicando desde
-qué posición empieza a sobrescribir.
+- Aplicacion:
+Los puntos en las texturas se identifican con coordenadas (s, t, r, q) que parten desde la esquina inferior izquierda. 
+Para aplicar una textura sobre una primitiva, se calculan las coordenadas de texturas correspondientes a cada píxel. 
+Dado que los tamaños de la primitiva y la textura pueden ser diferentes, se filtrará la textura para aumentarla o encogerla.
+El proceso de filtrado se puede configurar con las funciones glTexParameter.
 
-Los puntos en las texturas se identifican con coordenadas (s, t, r, q) que parten desde la esquina
-inferior izquierda. Para aplicar una textura sobre una primitiva, se calculan las coordenadas de
-texturas correspondientes a cada píxel. Dado que los tamaños de la primitiva y la textura
-pueden ser diferentes, se filtrará la textura para aumentarla o encogerla. El proceso de filtrado
-se puede configurar con las funciones glTexParameter.
 
-En caso de que los tamaños de la primitiva y la textura sean muy diferentes, podría suceder
-que a dos píxeles consecutivos se le asocien texels alejados, produciendo aliasing. Una solución
-serían los Mipmaps, que consisten en tener versiones de la textura en tamaños inferiores
 
+/*
+MipMaps y Normal Maps
+*/
+
+Los mipmaps son versiones reducidas de una textura original, usadas para mejorar la calidad visual y evitar
+el aliasing cuando la textura se muestra muy pequeña. Cada nivel se obtiene dividiendo la textura anterior a la mitad 
+en ancho y alto.
+
+En OpenGL, se cargan con glTexImage2D() especificando el nivel, o se generan automáticamente con glGenerateMipmap(). 
+Se configuran los niveles con glTexParameteri(). Usar mipmaps mejora el rendimiento y la calidad, aunque requiere
+más memoria.
+
+
+El normal mapping es una técnica que permite simular detalles de rugosidad, grietas y relieves en la superficie 
+de un objeto sin aumentar su complejidad geométrica. En lugar de subdividir la malla en más vértices y primitivas, 
+se utiliza una textura especial llamada normal map que almacena información sobre los vectores normales en cada punto 
+de la superficie. 
+Estos vectores normales modificados afectan el cálculo de la iluminación en el fragment shader, haciendo que la 
+superficie parezca más detallada y con irregularidades, aunque su geometría siga siendo simple. De esta forma, 
+se logra un efecto visual de mayor realismo con un costo computacional mucho menor.
 
 
 /*
@@ -45,12 +60,81 @@ Describa el proceso de creación y asignación de contenido de una textura 2D.
 ¿Como se obtiene el contenido de las texturas en el Fragment Shader?.
 */
 
+La creación y asignación de una textura 2D en OpenGL comienza generando un identificador con glGenTextures() y 
+activando la textura con glBindTexture(GL_TEXTURE_2D, texID). A continuación, se carga la imagen con glTexImage2D() y 
+se configuran sus parámetros de filtrado y repetición usando glTexParameteri().
+
+Luego, para asignar esta textura al shader, se debe activar la unidad de textura con glActiveTexture(),
+asociarla con un sampler2D en GLSL mediante glUniform1i(), y pasar las coordenadas de textura a través de los 
+atributos de vértices.
+
+En el Fragment Shader, se accede al contenido de la textura usando la función texture(), que toma un sampler2D y 
+las coordenadas de textura como argumentos:
+
+#version 400
+
+uniform sampler2D tex;
+in vec2 TexCoord;
+out vec4 FragColor;
+
+void main() {
+    FragColor = texture(tex, TexCoord);
+}
+
+
+
 
 
 /*
-¿Qué es una textura CUBEMAP? ¿Cómo se crea y se asigna su contenido? ¿Cómo se utiliza
-en los shaders? 
-Desarrolle el Vertex Shader y el Fragment Shader que permite generar un Skybox 
-(una imagen de fondo en 360º) por medio de una textura Cubemap
+¿Qué es una textura CUBEMAP? ¿Cómo se crea y se asigna su contenido? ¿Cómo se utiliza en los shaders? 
+Desarrolle el Vertex Shader y el Fragment Shader que permite generar un Skybox por medio de una textura Cubemap
 */
+
+
+Una textura Cubemap es un tipo de textura que contiene seis imágenes, cada una correspondiente a una cara de un cubo.
+
+La creación y asignación de una textura cubemap comienza generando un identificador con glGenTextures() y 
+activando la textura con glBindTexture(GL_TEXTURE_CUBE_MAP, texID). 
+Se cargan las seis imágenes, cada una en una cara diferente con glTexImage2D() usando los targets:
+GL_TEXTURE_CUBE_MAP_POSITIVE_X
+GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+GL_TEXTURE_CUBE_MAP_POSITIVE_Z
+GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+y se configuran sus parámetros de filtrado y repetición usando glTexParameteri().
+
+
+En el Vertex Shader, se pasa la posición del vértice hacia el Fragment Shader.
+En el Fragment Shader, se usa un samplerCube y la función texture() con la dirección 3D para obtener el color del entorno.
+
+#version 400
+
+layout(location = 0) in vec3 VertexPosition;
+uniform mat4 Inverse;
+out vec3 Position;
+
+void main()
+{
+  gl_Position = vec4(VertexPosition,1.0);
+  Position = vec3(Inverse * gl_Position);
+  Position = normalize(Position);
+}
+
+
+#version 400
+
+in vec3 Position;
+out vec4 FragColor;
+uniform samplerCube CubemapTex;
+
+void main()
+{
+  FragColor = texture(CubemapTex,Position);
+}
+
+
+
+
+
 
