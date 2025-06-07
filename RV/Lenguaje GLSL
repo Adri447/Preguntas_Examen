@@ -53,37 +53,30 @@ o predefinidas por GLSL.
 
 
 
+
 /*
 ¿Qué es un Vertex Buffer Object? ¿Y un Vertex Array Object? Describa la forma de crearlos y configurarlos
 */
 
-- Vertex Buffer Object
-Un VBO es una estructura de datos que puede almacenar en la memoria de la GPU diferentes
-tipos de información, según qué tipo de buffer se le asigna al activarlo como, por ejemplo:
-almacenar atributos de los vértices o almacenar una lista de índices a vértices.
+- Vertex Buffer Object (VBO):
+Un VBO es una estructura de datos que permite almacenar información en la memoria de la GPU. 
+Se utiliza principalmente para guardar atributos de los vértices como posiciones, colores, normales, etc. o índices 
+que indican cómo conectar esos vértices. 
 
-Se crean, desde el código para la CPU, a través de la función glGenBuffers, donde se le pasa el
-número de buffers a crear y los identificadores de los buffers. Ya creado un VBO, para poder
-utilizarlo es necesario activarlo con la función glBindBuffer, donde se le indica qué tipo de
-buffer será. Por último, para almacenar los datos se utiliza la función glBufferData, indicándole
-el tipo de buffer a llenar y dónde están los datos que va a guardar.
+Para crear un VBO desde la CPU, se utiliza la función glGenBuffers, que genera uno o varios identificadores de buffer. 
+Para usar un VBO, primero se activa con glBindBuffer, indicando el tipo de buffer. Finalmente, se carga la información 
+con glBufferData, indicando el tipo de buffer, el tamaño de los datos y un puntero a los datos en la memoria de la CPU.
 
-- Vertex Array Object
-Cuando ya estén creados los VBOs y almacenados los datos de los vértices, el siguiente paso es
-crear los Vertex Array Objects. Éstos son estructuras de datos que definen el mapeo entre los
-atributos (almacenados en los VBOs) y los nombres de las entradas de los shaders.
-A través de la función glGenVertexArrays podemos crear un cierto número de VAOs y obtener
-sus identificadores. Para usar un VAO, se activa primero con la función glBindVertexArray.
-Para definir un atributo perteneciente a un VAO se usa la función glVertexAttribPointer,
-indicándole el índice, cuantos datos habrá por atributo y el tipo que será.
-Para asignar la posición de una variable de entrada, se utiliza la función glBindAttribLocation,
-indicándole el shader, la posición del atributo y el nombre de la variable
+- Vertex Array Object (VAO):
+Un VAO es una estructura que almacena el estado de configuración de los atributos de los vértices. 
+En otras palabras, define cómo deben interpretarse los datos almacenados en los VBOs y cómo se conectan con las 
+entradas del shader. 
 
+Para crear un VAO, se utiliza glGenVertexArrays, que genera uno o más identificadores. Para activarlo, se usa 
+glBindVertexArray. Luego, se definen los atributos con glVertexAttribPointer, especificando el índice del atributo, 
+la cantidad de componentes, el tipo de dato, y otros parámetros. El índice del atributo se puede asignar antes de linkar el programa por
+medio del comando glBindAttribLocation.
 
-/*
-Describa como se utilizan los operadores aritméticos de suma, resta, producto y división sobre 
-los tipos de datos vectoriales y matriciales en el lenguaje GLSL.
-*/
 
 
 
@@ -122,3 +115,28 @@ Permiten agrupar diferentes variables bajo un mismo tipo. Ejemplo:
 6) Tipos opacos:
 Usados para manejar objetos gráficos complejos como texturas (sampler2D, samplerCube) e imágenes (image2D). 
 No se accede a sus datos directamente, sino mediante funciones específicas.
+
+
+
+
+
+/*
+Describa como se utilizan los operadores aritméticos de suma, resta, producto y división sobre 
+los tipos de datos vectoriales y matriciales en el lenguaje GLSL.
+*/
+
+
+En GLSL, los operadores aritméticos como suma, resta, multiplicación y división se pueden aplicar no solo a escalares,
+sino también a vectores y matrices. Cuando se usa un escalar con un vector o una matriz, la operación se realiza 
+componente a componente. Por ejemplo, 2.0 * vec3(1.0, 2.0, 3.0) devuelve vec3(2.0, 4.0, 6.0).
+
+Si la operación se realiza entre dos vectores del mismo tipo y tamaño, también se aplica componente a componente.
+En el caso de las matrices, la suma, resta y división funcionan igual, pero la multiplicación se interpreta como 
+producto matricial si se hace entre matrices o entre un vector y una matriz.
+
+Para operaciones más específicas, GLSL incluye funciones como dot() para el producto escalar y cross() para el 
+producto vectorial entre vectores vec3. 
+
+Además, el operador módulo (%) también está disponible, pero solo puede aplicarse a tipos enteros, como int y uint, 
+y no puede utilizarse con flotantes, vectores ni matrices.
+
