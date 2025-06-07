@@ -2,34 +2,25 @@
 
 /*
 ¿Qué es un Transform Feedback Object? Describa la forma de crearlo y utilizarlo
+Describa como puede utilizarse para desarrollar sistemas de partículas con la técnica conocida como “buffer ping-pong”
 */
 
-Una de las formas para generar escenas con figuras no rígidas es el Transform Feedback. Este
-consiste en modificar los atributos de los vértices en función de los valores generados en un
-renderizado anterior, lo que requiere almacenar los datos generados en la memoria de la GPU
-y ser capaz de leerlos en futuros renderizados.
+Una de las formas de generar escenas con figuras no rígidas es mediante el uso de Transform Feedback. Esta técnica 
+permite modificar los atributos de los vértices en función de los valores generados en un renderizado anterior. 
+Para ello, es necesario almacenar estos datos en la memoria de la GPU y poder reutilizarlos en renderizados futuros.
 
-La técnica utilizada se conoce como buffer “ping-pong” porque realiza el renderizado en dos
-pasadas. En la primera se ejecuta sólo el VertexShader, y en la segunda se realiza el proceso
-completo, tomando como entrada el buffer generado en la primera pasada.
+La técnica utilizada se conoce como buffer “ping-pong”, ya que realiza el renderizado en dos pasadas. En la primera, 
+se ejecuta únicamente el Vertex Shader para generar nuevos datos, y en la segunda se lleva a cabo el renderizado completo, 
+utilizando como entrada el buffer generado en la primera pasada.
 
-Se definen dos Transform Feedback Object (TFO) que describen los buffers a utilizar como
-salida y entrada del VertexShader. Estos se crean con glGenTransformFeedbacks, indicando el
-número de buffers y el array donde están los identificadores, en este caso serían 2. Se activan
-con glBindTransformFeedback y se enlazan tantos buffers como se quieran tener ubicados con
-glBindBufferBase (un buffer por cada valor que se quiera conservar).
+Se definen dos Transform Feedback Objects (TFO) que describen los buffers a utilizar como salida y entrada del Vertex Shader.
+Estos se crean con glGenTransformFeedbacks, indicando el número de objetos y el array donde se almacenarán sus 
+identificadores (en este caso, dos). Luego, se activan con glBindTransformFeedback y se enlazan los buffers deseados
+mediante glBindBufferBase, uno por cada atributo que se quiera conservar.
 
-Después, se define la relación entre las salidas de los shaders y los buffers que forman el TBO
-con glTransformFeedbackVaryings. Durante el renderizado hay que iniciar el proceso de 
-transform feedback con la función glBeginTransformFeedback.
+A continuación, se define la relación entre las salidas del shader y los buffers del TFO mediante glTransformFeedbackVaryings. 
+Durante el renderizado, se inicia el proceso de transform feedback con la función glBeginTransformFeedback.
 
-Cuando se lancen las primitivas de dibujo, las salidas del VertexShader se almacenarán en los
-buffers indicador del TFO. Para finalizar el proceso de transform feedback se utiliza el comando
-glEndTransformFeedback
+Cuando se lanzan las primitivas de dibujo, las salidas del Vertex Shader se almacenan directamente en los buffers
+indicados por el TFO. Para finalizar el proceso, se utiliza el comando glEndTransformFeedback.
 
-
-
-/*
-¿Qué es un Transform Feedback Object? Describa como puede utilizarse para desarrollar sistemas de partículas 
-con la técnica conocida como “buffer ping-pong”.
-*/
