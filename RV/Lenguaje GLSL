@@ -26,6 +26,31 @@ Describa la estructura básica de un shader ¿Qué tipos de declaraciones se pue
 Descríbalas brevemente. 
 */
 
+La estructura básica de un shader en GLSL comienza con la declaración de la versión del lenguaje (#version), 
+seguida de una serie de declaraciones de variables y funciones, y finaliza con la función principal void main(), 
+que contiene el código que se ejecutará en la GPU.
+
+Las principales declaraciones que pueden aparecer en un shader son:
+
+- in (variables de entrada): Reciben datos externos al shader. En el Vertex Shader las entradas corresponden a los 
+atributos de cada vértice, y en el Fragment Shader las entradas corresponden a los atributos de cada pixel, 
+calculados mediante interpolación de las salidas del Vertex_Shader.
+
+- out (variables de salida): Son los resultados que el shader devuelve. Las salidas del Vertex_Shader corresponden
+a las entradas del Fragment_Shader, y este último devuelve el color final del píxel.
+
+- uniform: Son variables constantes durante toda la ejecución del shader. Se usan para enviar datos globales, 
+como matrices de transformación o parámetros de iluminación.
+
+- Funciones auxiliares: Se declaran como en C y ayudan a estructurar el código. Pueden ser llamadas desde el main().
+
+- subroutine: Permiten definir interfaces de funciones y simulan punteros a funciones, útiles para cambiar
+comportamientos sin recompilar.
+
+El bloque main() debe asignar las salidas y puede utilizar las variables declaradas, así como funciones propias 
+o predefinidas por GLSL.
+
+
 
 
 /*
