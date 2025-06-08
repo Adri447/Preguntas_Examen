@@ -5,52 +5,54 @@ Describa el modelo de iluminación de Phong. ¿Cuántos tipos de luz utiliza?
 ¿Como se calcula el efecto de cada tipo de luz?
 */
 
-El modelo de Phong consiste en interpolar las propiedades de los vértices para cada pixel y
-calcular el color directamente en el FragmentShader. Aunque resulta más costoso, se
-consiguen mejores resultados de coloreado. De este modo, consiste en considerar la
-luz como la suma de tres efectos diferentes:
+El modelo de iluminación de Phong simula cómo la luz interactúa con una superficie y calcula el color de cada píxel 
+directamente en el Fragment Shader, interpolando propiedades como la normal y la posición. Aunque resulta más costoso, se
+consiguen mejores resultados de coloreado.
 
-- Luz ambiental: procede de todas direcciones.
-- Luz difusa: proviene de una determinada dirección y al chocar con un objeto se dispersa en
-todas las direcciones. La intensidad de esa dispersión depende del ángulo de incidencia.
-- Luz especular: es una luz que proviene de una única dirección y se refleja con el mismo
-ángulo de incidencia al chocar con un objeto.
+Este modelo considera tres tipos de luz. El color final de cada punto de un objeto se calcula como la suma de los 
+efectos de color de cada tipo de luz:
 
-El color final de cada punto de un objeto se calcula como la suma de los efectos de color de
-cada tipo de luz.
-- Color provocado por luz ambiental: es el producto de la luz ambiental por el color del
-material ante la luz ambiental.
-- Color provocado por luz difusa: es el producto de la luz difusa por el color del material ante
-esa luz, multiplicados además por un factor de incidencia de la luz, siendo el coseno del
-ángulo formado por la dirección de la luz y el vector normal de la superficie.
-- Color provocado por luz especular: es el producto de la luz especular por el color del
-material con esa luz, multiplicados por un factor especular. Este factor se calcula como el
-coseno del ángulo entre el vector posición del observador (del punto al observador) y el
-vector reflexión de la luz, elevado a un coeficiente de brillo.
+- Luz ambiental: Proviene de todas direcciones y se dispersa uniformemente.
+El efecto es el producto de la luz ambiental por el color del material ante la luz ambiental.
+Ca = La * Ma
 
-Es importante tener en cuenta los distintos sistemas de coordenadas de los vectores que se
-utilizan. Para realizar todos los cálculos se transformarán todos los vectores a coordenadas de
-observador.
-Los cálculos para obtener el color final se hacen en el FragmentShader, por tanto, es necesario
-indicarle mediante variables uniformes de entrada las direcciones de los tipos de luz y el color
-del material del objeto para cada tipo de luz.
+- Luz difusa: Proviene de una dirección concreta. Su intensidad depende del ángulo entre la luz y la normal.
+El efecto es el producto de la luz difusa por el color del material ante esa luz, multiplicados por un factor de incidencia, 
+siendo el coseno del ángulo formado por la dirección de la luz y el vector normal de la superficie.
+Cd = Ld * Md * cos(ç)
+
+- Luz especular: Representa brillos. Depende del ángulo entre el vector reflejado de la luz y el vector hacia el observador.
+El efecto es el producto de la luz especular por el color del material con esa luz, multiplicados por un factor especular. 
+Este factor se calcula como el coseno del ángulo entre el vector posición del observador y el vector reflexión de la luz,
+elevado a un coeficiente de brillo.
+Cs = Ls * Ms * (cos(ç))^s
+ 
+El color final se calcula como la suma de las tres contribuciones:
+Cf = Ca + Cd + Cs
+
 
 
 
 /*
-Describa el modelo de iluminación de Phong, indicando las ecuaciones que permiten calcular
-el efecto de cada tipo de luz. Describa algunas formas de optimizar este modelo de iluminación.
+Describa algunas formas de optimizar el modelo de iluminación de Phong.
 */
 
+Dado que el modelo de Phong es más costoso computacionalmente al calcularse por píxel, existen diversas formas de 
+optimizarlo. 
+Una primera optimización es el uso del modelo non-local viewer, donde se considera que el observador está alejado. 
+Esto permite fijar el vector de visión a  (0,0,1), evitando su cálculo en cada fragmento y simplificando las operaciones.
 
+Otra optimización es asumir que la dirección de la luz es un vector unitario, lo cual permite evitar su normalización, 
+lo que ahorra operaciones en el shader. 
 
+También se puede emplear el modelo de Blinn, conocido como halfway vector, que consiste en sustituir la expresión (r·v)
+en el término especular por la expresión (h·n), donde el vector h se calcula como v+s. De esta forma se evita el cálculo 
+de r y su normalización.
 
-
-
-
-
-
-
+Finalmente, cuando la luz no está en el infinito, se puede considerar una posición de la luz en lugar de una dirección fija.
+En este caso, el vector de incidencia de la luz sobre el punto (-s) se puede calcular como la diferencia entre la 
+posición de la luz y la posición del punto, Vpos: 
+-s = normalize(Lpos-Vpos).
 
 
 
