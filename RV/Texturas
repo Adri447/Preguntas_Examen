@@ -35,7 +35,7 @@ El proceso de filtrado se puede configurar con las funciones glTexParameter.
 
 
 /*
-MipMaps y Normal Maps
+MipMaps y Normal Maps (Falta Info)
 */
 
 Los mipmaps son versiones reducidas de una textura original, usadas para mejorar la calidad visual y evitar
