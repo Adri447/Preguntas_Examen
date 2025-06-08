@@ -4,28 +4,19 @@
 ¿Cuales son sus funciones predefinidas?
 */
 
-Es un shader opcional en el proceso de renderizado. Se ejecuta por cada primitiva generada en
-la etapa de ensambado y su objetivo es realizar cambios sobre ella. Algunos de estos cambios
-pueden ser:
+El Geometry Shader es una etapa opcional del proceso de renderizado que se ejecuta una vez por cada primitiva generada
+en la etapa de ensamblado. Su objetivo principal es modificar, sustituir o eliminar primitivas. Entre sus usos más comunes 
+se encuentran: la eliminación de primitivas, la generación de mayor detalle dividiendo primitivas originales, 
+la incorporación de propiedades adicionales a los vértices basadas en la geometría, y la sustitución de una primitiva 
+por otra diferente.
 
-- Eliminar primitivas.
-- Incorporar más nivel de detalle sustituyendo una primitiva por un número mayor de
-primitivas e interpolando los valores para los nuevos vértices.
-- Introducir nuevas propiedades en los vértices, calculadas en base a la información
-geométrica. No puede realizarse en el VertexShader ya que ahí no se trata información de
-vértices vecinos.
-- Sustituir la primitiva por otra diferente.
+Como entrada, recibe un array que contiene la información de los vértices de la primitiva original. Cada vértice incluye 
+datos como la posición (gl_Position), el tamaño del punto (gl_PointSize) y las distancias a los planos clip 
+(gl_ClipDistance[]).
 
-Tiene como entrada un array que almacena la información de cada vértice de la primitiva. Para
-cada vértice, la estructura recibida indica: su posición, el tamaño del punto y distancia a los
-planos clip (si esta función está activada).
-Su salida predefinida son las nuevas primitivas.
-
-Su funcionamiento se basa en dos funciones predefinidas:
-- EmitVertex: genera los vértices de las nuevas primitivas. Se guarda como vértice el valor que
-esté en la salida del shader (el valor de gl_position).
-- EndPrimitive: indica que los vértices generados anteriormente forman una primitiva. Los
-siguientes vértices que puedan generarse pertenecerán a otra primitiva
+La salida del Geometry Shader son las nuevas primitivas generadas. Para ello, se utilizan dos funciones predefinidas: 
+EmitVertex(), que emite un vértice con los valores actuales de salida, y EndPrimitive(), que indica que los vértices 
+emitidos forman una primitiva completa. Si no se llama a EmitVertex(), la primitiva original se descarta.
 
 
 
@@ -35,11 +26,87 @@ Desarrolle un shader de geometría que sustituya un triángulo por tres triángu
 de los vértices del triángulo original como aparece en la figura.
 */
 
+#version 400
+
+layout(triangles) in;
+layout(triangle_strip, max_vertices = 9) out;
+
+out vec3 FragColor;
+
+void main() {
+    // Acceder a los tres vértices del triángulo original
+    vec4 A = gl_in[0].gl_Position;
+    vec4 B = gl_in[1].gl_Position;
+    vec4 C = gl_in[2].gl_Position;
+
+    // Calcular punto medio (centro del triángulo)
+    vec4 M = (A + B + C) / 3.0;
+
+    // TRIÁNGULO 1: A, B, M
+    gl_Position = A;
+    EmitVertex();
+    gl_Position = B;
+    EmitVertex();
+    gl_Position = M;
+    EmitVertex();
+    EndPrimitive();
+
+    // TRIÁNGULO 2: B, C, M
+    gl_Position = B;
+    EmitVertex();
+    gl_Position = C;
+    EmitVertex();
+    gl_Position = M;
+    EmitVertex();
+    EndPrimitive();
+
+    // TRIÁNGULO 3: C, A, M
+    gl_Position = C;
+    EmitVertex();
+    gl_Position = A;
+    EmitVertex();
+    gl_Position = M;
+    EmitVertex();
+    EndPrimitive();
+}
+
+
 
 /*
 Desarrolle el código de un shader de geometría que permita dibujar point sprites, es decir,
 que sustituya los puntos generados por una primitiva GL_POINTS por un cuadrado con una textura.
 */
+
+#version 400
+
+layout(points) in;
+layout(triangle_strip, max_vertices=4) out;
+
+uniform mat4 Proj;
+uniform float Size2;
+
+out vec2 TexCoord;
+
+void main()
+{
+  vec4 desp0 = vec4(-Size2, -Size2, 0.0, 0.0);
+  gl_Position = Proj * (desp0 + gl_in[0].gl_Position);
+  TexCoord = vec2(0.0, 0.0);
+  EmitVertex();
+  vec4 desp1 = vec4(Size2, -Size2, 0.0, 0.0);
+  gl_Position = Proj * (desp1 + gl_in[0].gl_Position);
+  TexCoord = vec2(1.0, 0.0);
+  EmitVertex();
+  vec4 desp2 = vec4(-Size2, Size2, 0.0, 0.0);
+  gl_Position = Proj * (desp2 + gl_in[0].gl_Position);
+  TexCoord = vec2(0.0, 1.0);
+  EmitVertex();
+  vec4 desp3 = vec4(Size2, Size2, 0.0, 0.0);
+  gl_Position = Proj * (desp3 + gl_in[0].gl_Position);
+  TexCoord = vec2(1.0, 1.0);
+  EmitVertex();
+  EndPrimitive();
+}
 
 
 
