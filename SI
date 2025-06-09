@@ -102,6 +102,78 @@ FMS jerárquica para simplicar FMS complejo mediante la inclusión de subestados
 
 
 /*
+Elementos de la Búsqueda en Espacio de Estados
+*/
+
+Estado Inicial, Operadores, Prueba de Meta, Coste.
+
+
+Estrategia No informada: anchura, profundidad
+Estrategia Informada (Heurística): voraz, A*.
+Poda alfa-beta (MinMax): maximo beneficio mio, minimo beneficio del adversario
+
+
+
+/*
+Restricciones
+*/
+
+Un CSP (Constraint Solving Problem) esta formado por Variables, Dominios, Restricciones.
+El objetivo es encontrar un valor para cada variable de manera que se satisfagan todas las restricciones del problema
+
+El algoritmo de Backtraking con chequeo previo (Forward Checking) marca valores de futuros dominios si son inconsistentes.
+Las heurísticas en Backtracking buscan reducir el tiempo de búsqueda.
+
+Forward checking es una técnica que mantiene información sobre los posibles valores para las variables por asignar.
+
+El algoritmo AC3 se utiliza para asegurar la consistencia local en un CSP, es un preproceso.
+
+
+
+/*
+Planificación
+*/
+Planificación es el proceso de búsqueda y articulación de una secuencia de acciones que permite alcanzar un objetivo. 
+
+La planificación de orden parcial se caracteriza por permitir pasos no ordenados en el plan.
+La técnica divide y vencerás se basa en dividir el problema en subproblemas independientes y resolverlos por separado.
+
+STRIPS:
+En STRIPS los objetivos son conjunciones de literales positivos.
+Una Accion consta de un nombre, precondiciones, una lista de adición y una lista de supresión.
+La anomalía de Sussman ejemplifica la dificultad de mantener objetivos independientes.
+
+Principio de mínimo compromiso: Tomar decisiones solo cuando sea estrictamente necesario.
+No determinar completamente el orden entre acciones, a no ser que sea estrictamente necesario.
+
+POP:
+El conjunto de acciones son los pasos que el plan lleva a cabo, con sus precondiciones y efectos.
+Un enlace causal en un plan de orden parcial representa la precedencia entre acciones.
+Un conjunto de precondiciones abiertas: aquellas que aún no tienen enlaces causales que las consigan.
+Un conflicto en un plan parcial final e una acción que amenaza a un enlace causal existente.
+
+En el algoritmo POP una precondición abierta es una condición necesaria para una acción que aún no ha sido 
+satisfecha en el plan.
+Para resolverla, se puede:
+Agregar una nueva acción que produzca el literal requerido (opción a).
+Vincularla mediante un enlace causal a una acción existente que ya produzca ese literal (opción b).
+
+Una amenaza de una acción C sobre un enlace causal A →p→ B se da Cuando C tiene a ¬p en su lista de efectos y 
+puede ir después de A y antes de B.
+
+Cuando una acción C amenaza un enlace causal entre A y B, se resuelve la amenaza mediante:
+Promoción: Forzar que la acción amenazante C ocurra antes de A, para que no interfiera con el enlace causal.
+Degradación: Forzar que la acción amenazante C ocurra después de B, evitando que afecte el enlace causal.
+
+Para que un plan sea considerado final se deben cumplir ciertas condiciones:
+No tener precondiciones abiertas (todas deben estar satisfechas).
+No tener amenazas sin resolver.
+No debe contener ciclos en las restricciones de orden.
+
+
+
+
+/*
 POP Planificación de orden parcial
 a) ¿Qué es una precondición abierta del mismo?
 b) ¿Y una amenaza?
@@ -119,7 +191,7 @@ c) Un plan parcial final es un plan parcial en el que no existen ciclos ni preco
 sin conflicto entre las acciones del plan.
 
 d) Secuenciar un plan parcial final consiste en generar una lista de acciones que respetan las relaciones 
-de orden entre las acciones del plan parcial.
+de orden entre las acciones del plan parcial. Construir un plan secuencial que respete las precedencias obligatorias.
 
 
 
