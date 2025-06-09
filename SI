@@ -192,6 +192,16 @@ No permite la concurrencia por lo que es necesario mantener la exclusión mutua 
 agentes puedan acceder al mismo tiempo.
 
 
+/*
+Ontologías
+*/
+
+Una clase es un concepto que representa un grupo de objetos con propiedades comunes.
+Una instancia es un objeto específico que pertenece a una clase.
+El propósito de definir una jerarquía de clases es organizar los conceptos en niveles de generalidad.
+Una jerarquía taxonómica en una estructura organizacional que clasifica conceptos en superclases y subclases.
+
+
 
 
 
