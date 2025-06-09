@@ -13,7 +13,7 @@ Esta etapa se divide en tres fases:
 y los valores de los vértices de las primitivas a crear.
 
 - Generación de primitivas (TPG): Esta fase no programable recibe una lista con los vértices de la primitiva que va a crear, 
-obtenidos de la fase anterior. Las primitivas que genera las sitúa en un espacio de coordenadas llamado espacio de parámetros, 
+obtenidos de la fase anterior. Genera primitivas en base a la configuración recibida y las sitúa en un espacio de coordenadas llamado espacio de parámetros, 
 donde sus coordenadas se denominan u y v, que van de 0 a 1.
 
 - Evaluación de teselado (TES): recibe las coordenadas de cada vértice (TessCoord) en el espacio de parámetros y 
