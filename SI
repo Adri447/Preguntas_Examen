@@ -52,6 +52,54 @@ en cambio un agente decide realizar una acción en función de sus intereses.
 
 
 
+/*
+Tipos fundamentales de Algoritmos
+*/
+Sin búsqueda:
+Se puede predecir el coste computacional: Reglas, Árboles de decisión, Máquinas de Estados
+El conocimiento radica en el lógica del código
+Con búsqueda:
+El coste computacional depende del tamaño del espacio de búsqueda: Minimax, Planificación. A veces Pathfinding
+El conocimiento radica en la evaluzación de los estados.
+
+
+
+/*
+Reglas
+*/
+
+Una regla se dispara si sus antecedentes coinciden con algunos de los hechos de la base de datos de hechos.
+El disparo de la regla hace que su conclusión se añada a la base de datos de hechos o se realize su acción consecuente.
+
+Razonamiento hacia delante (Forward Chaining).
+Razonamiento hacia atrás (Backward Chaining).
+
+El motor de inferencia chequea la lista de reglas y selecciona aquellas que se cumplen. Dentro de este motor se 
+podría incluir el mecanismo de resolución de conflictos cuando se pueden aplicar múltiples reglas.
+
+
+/*
+Arboles de Decision
+*/
+
+Técnica de IA más básica, fácil de implementar, rápida ejecución, fácil de entender.
+
+
+/*
+Maquina Finita de Estados
+*/
+
+Estados: Acciones
+Condiciones: Percepción
+Transiciones: Pensar
+
+Configuracion inicial: Fácil de codificar, Muy eficiente, Muy difícil de mantener
+
+FMS + Arboles para evitar comprobaciones duplicadas costosas 
+FMS jerárquica para simplicar FMS complejo mediante la inclusión de subestados.
+
+
+
 
 /*
 POP Planificación de orden parcial
@@ -72,6 +120,28 @@ sin conflicto entre las acciones del plan.
 
 d) Secuenciar un plan parcial final consiste en generar una lista de acciones que respetan las relaciones 
 de orden entre las acciones del plan parcial.
+
+
+
+
+/*
+Coordinación
+*/
+La Coordinación puede ser definida como el proceso de manejo de dependencias entre actividades de diferentes agentes.
+Un Agentes es un componente con autonomía, reactividad y proactividad.
+La coordinación se vuelve crítica cuando los agentes son heterogéneos y autónomos.
+
+La cooperación es un tipo de coordinación entre agentes no antagonistas.
+La negociación es un proceso para resolver conflictos y alcanzar acuerdos entre agentes.
+
+La Coordinación se puede dividir también de forma:
+• Coordinación Explicita: Los agentes se comunican planes, objetivos, acciones, estados del mundo, etc...
+• Coordinación Implícita: sin comunicación – El entorno actúa como medio de interacción.
+
+La inspiración en sociedades humanas para resolver problemas de coordinación, se denomina Modelos Sociales.
+
+La Coordnación Emergente es cuando los agentes actúan de forma autónoma, sin comunicación ni reglas comunes previas, 
+y la coordinación surge espontáneamente de sus interacciones locales e independientes.
 
 
 
