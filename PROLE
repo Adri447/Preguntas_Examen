@@ -52,43 +52,43 @@ El proceso de retorno de una función conste de 5 etapas:
 Describa las características y principales estrategias de gestión del montón en la memoria con reserva dinámica.
 */
 
-La memoria con reserva dinámica, también conocida como montón o heap, es una región de memoria que permite la creación de estructuras cuyo tamaño y duración no se conocen en tiempo de compilación.
-Este tipo de memoria resulta esencial en la gestión de estructuras dinámicas como listas, árboles o grafos, y es intensamente utilizada en la programación orientada a objetos, 
-ya que en muchos lenguajes todos los objetos son almacenados en el montón.
+La memoria con reserva dinámica, también conocida como montón, es util para la gestión de estructuras dinámicas como 
+listas, árboles o grafos, y es intensamente utilizada en la programación orientada a objetos.
 
-Las operaciones fundamentales en esta región de memoria son el alojamiento (asignación de un bloque) y el desalojo (liberación del mismo). 
-En lenguajes orientados a procesos, estas operaciones se realizan con funciones como malloc y free, mientras que en lenguajes orientados a objetos se utilizan new y delete. 
-Estas funciones están implementadas en bibliotecas de tiempo de ejecución que el compilador incorpora automáticamente al programa.
+Las operaciones fundamentales en esta región de memoria son el alojamiento y el desalojo. 
+En lenguajes orientados a procesos, malloc y free, mientras que en lenguajes orientados a objetos, new y delete. 
 
 Existen distintas estrategias para gestionar el montón, entre ellas:
 
 Bloques de longitud fija:
-Esta técnica consiste en gestionar el montón como una lista enlazada de bloques del mismo tamaño. El sistema mantiene un puntero al primer bloque libre. 
-El alojamiento se realiza asignando ese primer bloque, y el desalojo consiste en reintegrar el bloque liberado al inicio de la lista. 
-Aunque esta estrategia es sencilla y rápida, sufre una gran limitación: en la práctica, las peticiones de memoria son de tamaño variable, por lo que puede resultar muy ineficiente.
+Esta técnica consiste en gestionar el montón como una lista enlazada de bloques del mismo tamaño. 
+El sistema mantiene un puntero al primer bloque libre. El alojamiento se realiza asignando ese primer bloque, y el desalojo
+consiste en reintegrar el bloque liberado al inicio de la lista. 
+En la práctica, las peticiones de memoria son de tamaño variable, por lo que puede resultar muy ineficiente.
 
 Montón con estructura simple:
-En este caso, el montón se organiza como una lista enlazada de bloques de diferentes tamaños. Cada bloque contiene tres campos: el tamaño del bloque, 
-un puntero a la zona libre (utilizada si se asigna), y un puntero al siguiente bloque.
+El montón se organiza como una lista enlazada de bloques de diferentes tamaños. Cada bloque contiene 
+tres campos: el tamaño del bloque, un puntero a la zona libre, y un puntero al siguiente bloque.
 
 1) En el proceso de alojamiento, pueden aplicarse varias estrategias:
 
-La estrategia del primer bloque consiste en recorrer la lista hasta encontrar un bloque suficientemente grande para la solicitud. Si es más grande que lo necesario, se divide, 
-asignando una parte y dejando la otra como un nuevo bloque.
+La estrategia del primer bloque consiste en recorrer la lista hasta encontrar un bloque suficientemente grande para la 
+solicitud. Si es más grande que lo necesario, se divide, asignando una parte y dejando la otra como un nuevo bloque.
 
-La estrategia del mejor bloque selecciona el bloque cuyo tamaño se ajusta mejor a la solicitud, lo cual minimiza desperdicio inmediato, pero suele producir una alta fragmentación.
+La estrategia del mejor bloque selecciona el bloque cuyo tamaño se ajusta mejor a la solicitud, lo cual minimiza 
+desperdicio inmediato, pero suele producir una alta fragmentación.
 
-La estrategia del peor bloque asigna el bloque más grande disponible, intentando minimizar la fragmentación futura, aunque a costa de perder grandes bloques útiles para futuras asignaciones grandes.
+La estrategia del peor bloque asigna el bloque más grande disponible, intentando minimizar la fragmentación futura, 
+aunque a costa de perder grandes bloques útiles para futuras asignaciones grandes.
 
 2) En el proceso de desalojo, también existen varias alternativas:
 
-Una posibilidad es colocar el bloque liberado al principio de la lista de bloques libres, lo cual es rápido pero dificulta la fusión con bloques contiguos y favorece la fragmentación.
+Una posibilidad es colocar el bloque liberado al principio de la lista de bloques libres, lo cual es rápido pero dificulta 
+la fusión con bloques contiguos y favorece la fragmentación.
 
-Otra opción es mantener la lista ordenada según la posición de memoria, lo que permite fusionar fácilmente bloques adyacentes, reduciendo la fragmentación, 
-aunque con un mayor coste en tiempo de inserción.
+Otra opción es mantener la lista ordenada según la posición de memoria, lo que permite fusionar fácilmente bloques 
+adyacentes, reduciendo la fragmentación, aunque con un mayor coste en tiempo de inserción.
 
-En resumen, la gestión del montón debe equilibrar la eficiencia en tiempo de ejecución y el aprovechamiento del espacio, utilizando estructuras y estrategias que respondan 
-adecuadamente a los patrones de uso de memoria de cada aplicación.
 
 
 
@@ -100,28 +100,28 @@ Memoria Dinámica (Estructura de Bloques Marcados)
 (a) Estructura de cada bloque
 
 En un esquema de gestión de memoria dinámica basado en bloques marcados, cada bloque de memoria contiene 
-información de control tanto al inicio como al final del mismo. 
+información de control tanto al inicio como al final del mismo, es decir, está duplicada. 
 Esta estructura incluye un indicador que señala si el bloque está libre o ocupado, el tamaño total del bloque, 
 y punteros hacia los bloques anterior y siguiente dentro de la lista de bloques libres. 
-Esta duplicación de la información en ambos extremos del bloque facilita la detección y fusión de
-bloques adyacentes cuando se libera memoria, permitiendo así una gestión más eficiente y reduciendo la fragmentación.
 
 (b) Proceso de alojamiento
 
-Cuando un programa solicita memoria, el sistema busca en la lista de bloques libres aquel que tenga un tamaño suficiente para satisfacer la petición. 
-Dependiendo de la política empleada (como primer ajuste, mejor ajuste, etc.), se elige un bloque adecuado. 
+Cuando un programa solicita memoria, el sistema busca en la lista de bloques libres aquel que tenga un tamaño suficiente 
+para satisfacer la petición. 
+Dependiendo de la política empleada (como primer ajuste, mejor ajuste o pero ajuste), se elige un bloque adecuado. 
 Si el bloque encontrado es significativamente más grande que lo solicitado, se divide: una parte se asigna al proceso, 
 y el resto se mantiene como bloque libre, con sus propios campos de control. 
-En ambos casos, se actualizan los punteros en la lista de bloques libres para reflejar la asignación realizada.
 
 (c) Proceso de desalojo
 
-Cuando se libera un bloque previamente asignado, este se marca como libre y se intenta fusionar con los bloques adyacentes si también están libres. 
+Cuando se libera un bloque previamente asignado, este se marca como libre y se intenta fusionar con los bloques
+adyacentes si también están libres. 
 Esto puede dar lugar a cuatro situaciones: 
   -  si ninguno de los bloques vecinos está libre, se agrega el bloque tal cual a la lista de libres
   -  si uno de ellos está libre, se fusiona con él
   -  si ambos lo están, se fusiona con ambos para formar un bloque más grande. 
-Este proceso es clave para minimizar la fragmentación externa y mejorar la reutilización del espacio disponible. 
+
+
 Finalmente, se actualiza la lista de bloques libres para reflejar la nueva situación tras la fusión.
 
 
