@@ -132,25 +132,29 @@ Memoria Dinámica (Estructura de División Fija)
 
 (a) Estructura de cada bloque
 
-En un esquema de gestión de memoria basado en bloques de división fija según la serie de Fibonacci, la memoria se divide en bloques cuyo tamaño sigue esta secuencia 
-(por ejemplo, 1, 2, 3, 5, 8, 13, etc.). Cada bloque incluye información de control que indica su tamaño (identificado mediante su posición en la secuencia), su estado (ocupado o libre)
+En un esquema de gestión de memoria basado en bloques de división fija según la serie de Fibonacci, la memoria se divide en 
+bloques cuyo tamaño sigue esta secuencia. Cada bloque incluye información de control que indica su tamaño, su estado 
 y, en algunos casos, punteros a otros bloques de la misma clase de tamaño dentro una lista de bloques libres. 
-Dado que los tamaños están predefinidos, el sistema puede organizar listas separadas para cada clase de tamaño, lo que permite una gestión más rápida de la asignación y liberación.
+Dado que los tamaños están predefinidos, el sistema puede organizar listas separadas para cada clase de tamaño,
+lo que permite una gestión más rápida de la asignación y liberación.
 
 (b) Proceso de alojamiento
 
-Cuando se solicita un bloque de memoria, el sistema selecciona el tamaño más pequeño de la secuencia de Fibonacci que sea igual o mayor al tamaño solicitado. 
-A continuación, busca un bloque libre de esa clase; si no hay ninguno disponible, puede intentar dividir un bloque mayor en dos bloques de tamaños consecutivos en la secuencia
-(por ejemplo, dividir un bloque de tamaño 13 en bloques de tamaño 8 y 5). Esta división solo es posible si los tamaños resultantes también pertenecen a la serie de Fibonacci.
+Cuando se solicita un bloque de memoria, el sistema selecciona el tamaño más pequeño de la secuencia de Fibonacci que sea 
+igual o mayor al tamaño solicitado. A continuación, busca un bloque libre de esa clase; si no hay ninguno disponible, 
+puede intentar dividir un bloque mayor en dos bloques de tamaños consecutivos en la secuencia. Esta división solo es 
+posible si los tamaños resultantes también pertenecen a la serie de Fibonacci.
 Una vez asignado el bloque, se marca como ocupado y se retira de la lista de bloques libres correspondiente.
 
 (c) Proceso de desalojo
 
-Cuando se libera un bloque, este se marca como libre y se intenta fusionar con su bloque hermano si fue previamente creado mediante una división
-(por ejemplo, si un bloque de tamaño 13 fue dividido en 8 y 5, y ambos están libres, pueden ser reunidos de nuevo en uno de tamaño 13).
-Esta operación de fusión solo es válida si se preserva la coherencia con la secuencia de Fibonacci. Después de la fusión, el nuevo bloque se añade a la lista de bloques libres correspondiente. 
-Este mecanismo permite reutilizar la memoria de manera eficiente, aunque está limitado por las restricciones impuestas por la secuencia de tamaños válidos.
+Cuando se libera un bloque, este se marca como libre y se intenta fusionar con su bloque hermano si fue previamente creado 
+mediante una división. Esta operación de fusión solo es válida si se preserva la coherencia con la secuencia de Fibonacci. 
+Después de la fusión, el nuevo bloque se añade a la lista de bloques libres correspondiente. 
 
+
+Este mecanismo permite reutilizar la memoria de manera eficiente, aunque está limitado por las restricciones impuestas 
+por la secuencia de tamaños válidos.
 
 
 
@@ -158,54 +162,32 @@ Este mecanismo permite reutilizar la memoria de manera eficiente, aunque está l
 Tipos de recolección de basura
 */
 
-La recolección de basura es una técnica que permite la liberación automática de memoria dinámica, liberando al programador de esta responsabilidad, 
-especialmente en lenguajes como Java, Python, Prolog o Lisp. A diferencia de lenguajes imperativos como C o C++, donde la gestión de memoria recae sobre el programador, 
-en los lenguajes declarativos y otros de alto nivel, esta tarea es realizada por el compilador o el intérprete del lenguaje. Existen diversas técnicas para implementar la recolección de basura, 
-entre las cuales destacan la desocupación sobre la marcha, el marcado y barrido, la recolección por copia, la recolección generacional y la recolección incremental.
+La recolección de basura es una técnica que permite liberar automáticamente la memoria dinámica, descargando al programador
+de esta tarea. Es común en lenguajes como Java, Python, Prolog o Lisp, a diferencia de lenguajes como C o C++, donde la 
+gestión de memoria es manual. En los lenguajes de alto nivel, esta función la realiza el compilador o el intérprete. 
 
+La técnica de desocupación sobre la marcha (free as you go) libera la memoria de un objeto en el momento en que deja de
+estar referenciado. Para ello, cada objeto mantiene un contador de referencias. Cuando este contador llega a cero, 
+el objeto se libera. Aunque es simple, no puede manejar estructuras circulares y tiene un alto coste en la modificación
+de punteros, por lo que su uso es limitado, salvo en lenguajes como Rust.
 
-1. Desocupación sobre la marcha (Free as you go)
-Este método se basa en liberar la memoria de un objeto justo en el momento en que deja de estar referenciado por cualquier puntero. Para ello, cada objeto mantiene un contador de enlaces,
-que se incrementa o decrementa cada vez que una variable pasa a referenciarlo o deja de hacerlo. Cuando el contador llega a cero, el objeto se libera.
+El método de marcado y barrido (mark-and-sweep) se realiza en dos fases. Primero se marcan todos los objetos alojados
+en memoria dinámica. Luego, se recorre la memoria y se liberan los objetos no marcados. Esta técnica permite identificar 
+con precisión qué objetos siguen siendo útiles, aunque puede ser costosa en tiempo de ejecución.
 
-Aunque su simplicidad resulta atractiva, tiene serias limitaciones. No puede liberar estructuras circulares, ya que los contadores de sus objetos nunca llegan a cero. 
-Además, el coste de modificar punteros es elevado, lo que ralentiza la ejecución. Por ello, esta técnica no se utiliza habitualmente, 
-salvo en lenguajes como Rust, que restringen explícitamente el uso de referencias.
+La recolección por copia (copying collection) divide la memoria en dos zonas: una activa y otra libre. Durante la 
+recolección, los objetos accesibles se copian a la zona libre, y luego se intercambian los roles. Esto simplifica la 
+gestión de memoria y permite un alojamiento secuencial, aunque requiere el doble de memoria y la actualización de todas 
+las referencias a los objetos.
 
+La recolección generacional se basa en la observación de que los objetos jóvenes tienden a morir pronto. Por ello, divide 
+la memoria en generaciones y realiza la recolección con mayor frecuencia en las más jóvenes. Los objetos que sobreviven 
+se trasladan a generaciones superiores. Esta técnica mejora el rendimiento al trabajar con áreas de memoria más pequeñas.
 
-2. Marcado y barrido (Mark-and-sweep)
-Este método trabaja en dos fases. Primero, se identifican las raíces (variables globales, locales, etc.) desde donde se pueden alcanzar los objetos del montículo. 
-En la fase de marcado, se recorren estas raíces y se marcan todos los objetos accesibles directamente o a través de referencias. Luego, en la fase de barrido, 
-se recorren todos los bloques de memoria dinámica (heap): los marcados se desmarcan, y los no marcados se consideran basura y se liberan.
-
-Para identificar las raíces, se emplean contadores que solo registran referencias desde variables locales o globales, ignorando referencias entre objetos. 
-De este modo, al desapilar funciones, se decrementan los contadores de los objetos referenciados, permitiendo mantener actualizadas las raíces efectivas.
-
-
-3. Recolección por copia (Copying Collection)
-Este método divide la memoria en dos áreas: from-space (zona activa) y to-space (zona libre del mismo tamaño). Durante la recolección, se copian todos los 
-objetos accesibles desde las raíces desde from-space a to-space, y luego se intercambian los roles de ambas zonas.
-
-La ventaja principal es que el alojamiento es secuencial y no requiere desalojo complejo, lo que simplifica la gestión de memoria. Sin embargo, requiere el doble de memoria 
-y obliga a actualizar todas las referencias a objetos, ya que cambian de dirección durante la copia. Para ello, se requiere identificar con precisión las raíces, 
-incluyendo registros de activación que contengan referencias y enlaces entre funciones.
-
-
-4. Recolección generacional
-Basada en la observación empírica de que los objetos jóvenes suelen morir pronto, esta técnica divide el montículo en generaciones (G0, G1, G2, etc.). 
-La recolección se realiza con más frecuencia en la generación más joven (G0) y menos en las siguientes. Los objetos que sobreviven a varias recolecciones se trasladan a generaciones superiores.
-
-Esta estrategia reduce el tiempo dedicado a la recolección, ya que se trabaja con áreas de memoria más pequeñas. 
-Es una versión modificada del método por copia, pero aplicada solo a una generación del montículo.
-
-
-5. Recolección incremental
-Dado que la recolección puede ser costosa en tiempo, especialmente en sistemas en tiempo real, los métodos incrementales buscan que el recolector trabaje en paralelo 
-con la ejecución del programa. Se clasifican los objetos en tres colores: blancos (no visitados), grises (visitados pero no completamente explorados) y negros (completamente procesados).
-
-El proceso avanza mientras existan objetos grises. Cuando ya no hay, los objetos blancos se consideran basura y se liberan. El sistema debe permitir que el programa, 
-al crear nuevos objetos o modificar referencias, actualice correctamente los colores. Esta técnica es una versión paralela del marcado y barrido, 
-diseñada para reducir las interrupciones del programa principal.
+La recolección incremental busca reducir las pausas del programa principal permitiendo que el recolector trabaje en 
+paralelo. Clasifica los objetos en blancos, grises y negros, y avanza mientras existan objetos grises. Cuando ya no hay, 
+los blancos se consideran basura. 
+Esta técnica es una versión paralela del marcado y barrido, ideal para sistemas en tiempo real.
 
 
 
