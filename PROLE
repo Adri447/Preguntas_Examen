@@ -38,7 +38,7 @@ El proceso de llamada de una función consiste en 6 etapas:
 
 d)
 El proceso de retorno de una función conste de 5 etapas:
-  1- Asignar el valor de vuelto.
+  1- Asignar el valor devuelto.
   2- Restablecer el estado de la máquina.
   3- Restaurar el valor de la dirección de retorno.
   4- Devolver el control a la función que llama.
