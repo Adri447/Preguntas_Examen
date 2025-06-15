@@ -194,8 +194,9 @@ la memoria en generaciones y realiza la recolección con mayor frecuencia en las
 se trasladan a generaciones superiores. Esta técnica mejora el rendimiento al trabajar con áreas de memoria más pequeñas.
 
 La recolección incremental busca reducir las pausas del programa principal permitiendo que el recolector trabaje en 
-paralelo. Clasifica los objetos en blancos, grises y negros, y avanza mientras existan objetos grises. Cuando ya no hay, 
-los blancos se consideran basura. 
+paralelo. Los objetos se dividen en tres tipos: blancos, que no han sido estudiados por el recolector; grises, que han sido 
+estudiados pero cuyos campos no lo han sido; y negros, que han sido estudiados y cuyos hijos también lo han sido, 
+y avanza mientras existan objetos grises. Cuando ya no hay, los blancos se consideran basura. 
 Esta técnica es una versión paralela del marcado y barrido, ideal para sistemas en tiempo real.
 
 
