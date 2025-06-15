@@ -117,9 +117,10 @@ y el resto se mantiene como bloque libre, con sus propios campos de control.
 Cuando se libera un bloque previamente asignado, este se marca como libre y se intenta fusionar con los bloques
 adyacentes si también están libres. 
 Esto puede dar lugar a cuatro situaciones: 
-  -  si ninguno de los bloques vecinos está libre, se agrega el bloque tal cual a la lista de libres
-  -  si uno de ellos está libre, se fusiona con él
-  -  si ambos lo están, se fusiona con ambos para formar un bloque más grande. 
+  -  si ninguno de los bloques vecinos está libre, se agrega el bloque tal cual al inicio de la lista de bloques libres
+  -  si uno de ellos está libre, se fusiona con él y se actualizan los valores de los enlaces. 
+  -  si ambos lo están, se fusiona con ambos para formar un bloque más grande. Se extrae el posterior y se fusiona
+     con el bloque y el anterior, poniendo los enlaces de este.
 
 
 Finalmente, se actualiza la lista de bloques libres para reflejar la nueva situación tras la fusión.
@@ -133,28 +134,36 @@ Memoria Dinámica (Estructura de División Fija)
 (a) Estructura de cada bloque
 
 En un esquema de gestión de memoria basado en bloques de división fija según la serie de Fibonacci, la memoria se divide en 
-bloques cuyo tamaño sigue esta secuencia. Cada bloque incluye información de control que indica su tamaño, su estado 
-y, en algunos casos, punteros a otros bloques de la misma clase de tamaño dentro una lista de bloques libres. 
-Dado que los tamaños están predefinidos, el sistema puede organizar listas separadas para cada clase de tamaño,
-lo que permite una gestión más rápida de la asignación y liberación.
+bloques cuyo tamaño sigue esta secuencia:
+– Bytes de control (C): bloque libre + tamaño + código de división
+– Serie de Fibonacci: Fn = Fn-1 + Fn-2 + C
+– Serie de división binaria: Fn = Fn-1 + Fn-1 + C
+Cada bloque incluye información de control que indica su tamaño, su estado libre o ocupado y punteros a otros bloques del
+mismo tamaño dentro una lista de bloques libres. 
 
 (b) Proceso de alojamiento
 
 Cuando se solicita un bloque de memoria, el sistema selecciona el tamaño más pequeño de la secuencia de Fibonacci que sea 
-igual o mayor al tamaño solicitado. A continuación, busca un bloque libre de esa clase; si no hay ninguno disponible, 
-puede intentar dividir un bloque mayor en dos bloques de tamaños consecutivos en la secuencia. Esta división solo es 
-posible si los tamaños resultantes también pertenecen a la serie de Fibonacci.
+igual o mayor al tamaño solicitado. A continuación, busca un bloque libre de esa clase. Si no hay ninguno disponible, 
+puede intentar dividir un bloque mayor en dos bloques de tamaños consecutivos en la secuencia.
+Cada vez que se divide un bloque, el subbloque izquierdo tiene un control de división 0 y al subbloque derecho se le incrementa.
+
 Una vez asignado el bloque, se marca como ocupado y se retira de la lista de bloques libres correspondiente.
 
 (c) Proceso de desalojo
 
-Cuando se libera un bloque, este se marca como libre y se intenta fusionar con su bloque hermano si fue previamente creado 
-mediante una división. Esta operación de fusión solo es válida si se preserva la coherencia con la secuencia de Fibonacci. 
-Después de la fusión, el nuevo bloque se añade a la lista de bloques libres correspondiente. 
+Estudiar el código de división para saber si es un bloque izquierdo (c = 0) o derecho (c > 0).
+Buscar la información del bloque compañero. Si es un bloque izquierdo, el bloque compañero estará en la posición del 
+bloque más el tamaño. Si es un bloque derecho, entonces proviene de una división en la que se conoce el tamaño del bloque 
+izquierdo, por lo que la posición del bloque compañero será la posición del bloque menos el tamaño del compañero.
+Si el bloque compañero está libre, fundir ambos bloques en el bloque original y repetir el proceso hasta que no se pueda 
+agrupar más.
+
+Actualizar los enlaces a medida que se van realizando las operaciones de liberación y agrupación.
 
 
-Este mecanismo permite reutilizar la memoria de manera eficiente, aunque está limitado por las restricciones impuestas 
-por la secuencia de tamaños válidos.
+Dado que los tamaños están predefinidos, el sistema puede organizar listas separadas para cada clase de tamaño.
+Sin embargo, este mecanismo está limitado por las restricciones impuestas por la secuencia de tamaños válidos.
 
 
 
