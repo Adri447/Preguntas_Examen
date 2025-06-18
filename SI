@@ -267,6 +267,7 @@ agentes puedan acceder al mismo tiempo.
 /*
 Ontologías
 */
+la antología es una definición formal de tipo propiedades y relaciones entre entidades que existen en un dominio de discurso particular
 
 Una clase es un concepto que representa un grupo de objetos con propiedades comunes.
 Una instancia es un objeto específico que pertenece a una clase.
