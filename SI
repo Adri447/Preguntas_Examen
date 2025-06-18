@@ -162,8 +162,8 @@ Una amenaza de una acción C sobre un enlace causal A →p→ B se da Cuando C t
 puede ir después de A y antes de B.
 
 Cuando una acción C amenaza un enlace causal entre A y B, se resuelve la amenaza mediante:
-Promoción: Forzar que la acción amenazante C ocurra antes de A, para que no interfiera con el enlace causal.
-Degradación: Forzar que la acción amenazante C ocurra después de B, evitando que afecte el enlace causal.
+Degradación: Forzar que la acción amenazante C ocurra antes de A, para que no interfiera con el enlace causal.
+Promoción: Forzar que la acción amenazante C ocurra después de B, evitando que afecte el enlace causal.
 
 Para que un plan sea considerado final se deben cumplir ciertas condiciones:
 No tener precondiciones abiertas (todas deben estar satisfechas).
