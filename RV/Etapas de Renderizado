@@ -36,12 +36,12 @@ nuevas primitivas. Las primitivas de salida pueden ser puntos, líneas o triáng
 primitivas a distintos layers, por ejemplo.
 
 
-- Rasterización e interpolación: es una etapa no programable. Estudia qué vértices quedan
-dentro del clipping volumen, desechando aquellos que estén fuera, y adaptando las
-primitivas que estén parcialmente fuera a través de nuevos vértices. Después, se identifican
-qué pixeles forman parte de la primitiva a dibujar según la ubicación del centro del píxel.
-• Entrada: primitives.
-• Salida: fragments
+- Rasterización e interpolación: 
+Es una etapa no programable. Estudia qué vértices quedan dentro del clipping volumen, desechando aquellos que estén fuera, 
+y adaptando las primitivas que estén parcialmente fuera a través de nuevos vértices. 
+Después, se identifican qué pixeles forman parte de la primitiva a dibujar según la ubicación del centro del píxel.
+Se calcula la orientación de la figura y se descartan según el face culling. 
+Finalmente, los atributos de cada fragmento se obtienen por interpolación lineal, salvo los declarados como "flat".
 
 
 - FragmentShader:
@@ -60,10 +60,32 @@ El proceso de renderizado genera al final el contenido de la imagen en una estru
 
 
 
+
 /*
 Describa la etapa de “Rasterización e interpolación” que forma parte del proceso de renderizado. 
 ¿Qué funciones se realizan en esta etapa? Describa brevemente como se desarrollan estas funciones
 */
+
+La etapa de rasterización e interpolación es una fase no programable del proceso de renderizado en OpenGL. 
+Su entrada son las primitivas gráficas ya ensambladas. Lo primero que se realiza en esta etapa es determinar qué vértices 
+y primitivas se encuentran dentro del clipping volume. Las primitivas completamente fuera de este volumen se descartan, 
+mientras que aquellas que estan parcialmente fuera se ajustan generando nuevos vértices sobre los bordes del volumen visible.
+
+Una vez que las primitivas visibles están definidas, se lleva a cabo la rasterización, que consiste en identificar qué 
+píxeles forman parte de la superficie que ocupa cada primitiva. Para ello, se analiza si el centro de cada píxel se 
+encuentra dentro de la figura generada por los vértices. Antes de esto, se puede aplicar el face culling, 
+un proceso que descarta primitivas con orientación incorrecta según cómo se haya configurado OpenGL.
+
+Posteriormente, se calcula el valor de los atributos de cada fragmento mediante interpolación. Los atributos de los 
+vértices se combinan utilizando coeficientes que dependen de la posición del píxel dentro de la primitiva. 
+Esta interpolación es lineal, excepto en los atributos declarados como “flat”, los cuales no se interpolan, sino que se 
+copian directamente de uno de los vértices, por defecto, el último. Esta convención puede modificarse mediante el comando
+glProvokingVertex.
+
+En resumen, esta etapa transforma primitivas geométricas en fragmentos visibles y calcula sus atributos de forma precisa,
+preparando cada uno para ser procesado en el Fragment Shader.
+
+
 
 
 
