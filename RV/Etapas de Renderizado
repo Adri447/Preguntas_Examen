@@ -2,36 +2,39 @@
 
 
 /*
-Describa brevemente las etapas del proceso de renderizado utilizado en OpenGL. (Un párrafo para cada etapa)
+Describa brevemente las etapas del proceso de renderizado utilizado en OpenGL. (Un párrafo de 5 lineas para cada etapa)
 */
 
 Etapas del proceso de renderizado:
-- VertexShader: se ejecuta sobre cada vértice de forma independiente. Utiliza atributos de
-entrada asociados a cada vértice y genera como salida la posición del vértice en
-coordenadas clip.
-• Entrada: vértices.
-• Salida: transformed vértices, transform feedback
+- VertexShader:
+Esta etapa es la primera del pipeline programable y se ejecuta individualmente sobre cada vértice. Su función principal es
+transformar la posición del vértice desde el sistema de coordenadas del modelo hasta el espacio de coordenadas de clip.
+Utiliza como entrada atributos como posición, normales y coordenadas de textura. Como salida, devuelve vértices 
+transformados listos para ensamblarse en primitivas. Además, puede generar datos auxiliares a través de transform feedback.
 
-- Ensamblado de primitivas: es una etapa no programable. Recibe la indicación de las
-primitivas a dibujar y los atributos de los vértices que las forman, generados por el
-VertexShader. Además, detecta si están ocultos o fuera del área de dibujo.
-• Entrada: transformed vértices, primitive/patch conectivity.
-• Salida: primitives, patches
 
-- Teselado: recibe los datos de un parche y genera nuevas primitivas. Se divide en:
-    - Control de teselado (TCS): recibe los vértices del patch y genera los valores de los
+- Ensamblado de primitivas: 
+Es una etapa etapa no programable del pipeline. Recibe la indicación de las primitivas a dibujar y los atributos de los 
+vértices que las forman, generados por el VertexShader. De este modo, organiza los vértices transformados en primitivas 
+gráficas como puntos, líneas, triángulos, etc. Es crucial para definir la estructura básica de lo que se renderiza.
+
+
+- Teselado: 
+Es una etapa opcional que recibe los datos de un parche y genera nuevas primitivas. Se divide en:
+    Control de teselado (TCS): recibe los vértices del patch y genera los valores de los
       vértices de las primitivas que se crearán.
-    - Generación de primitivas (TPG): genera las primitivas en un espacio de coordenadas
+    Generación de primitivas (TPG): genera las primitivas en un espacio de coordenadas
       llamado espacio de parámetros, sus coordenadas se denominan u y v, que van de 0 a 1.
-    - Evaluación de teselado (TES): transforma las coordenadas del espacio de parámetros
+    Evaluación de teselado (TES): transforma las coordenadas del espacio de parámetros
       a coordenadas de posición de los vértices (clip).
-• Entrada: patches.
-• Salida: primitives, transform feedback.
 
-- GeometryShader: es una etapa opcional. Recibe primitivas ya ensambladas y permite realizarç
-modificaciones sobre ellas. La información adyacente debe tratarse dentro de este shader
-• Entrada: primitives.
-• Saldia: primitives,transform feedback
+
+- GeometryShader: 
+Es una etapa opcional. Recibe primitivas ya ensambladas y permite realizar modificaciones, incluyendo la generación de 
+nuevas primitivas. Las primitivas de salida pueden ser puntos, líneas o triángulos. Además, la información 
+“adyacente” debe tratarse dentro de este shader. Esta etapa puede duplicar primitivas, crear primitivas nuevas y dirigir
+primitivas a distintos layers, por ejemplo.
+
 
 - Rasterización e interpolación: es una etapa no programable. Estudia qué vértices quedan
 dentro del clipping volumen, desechando aquellos que estén fuera, y adaptando las
@@ -40,19 +43,19 @@ qué pixeles forman parte de la primitiva a dibujar según la ubicación del cen
 • Entrada: primitives.
 • Salida: fragments
 
-- FragmentShader: Etapa programable y no opcional, se ejecuta por cada píxel dentro de la primitiva, 
-recibiendo los valores interpolados para el píxel. Genera el color asociado al píxel.
-• Entrada: fragments.
-• Salida: shaded fragments
 
-- Operaciones de raster: Etapa no programable que combina los diferentes fragmentos para generar 
-la versión final de la imagen. Algunos de los procesos incluidos en esta etapa 
-pueden ser ejecutados antes del FragmentShader por motivos de eficiencia.
-• Entrada: shaded fragments.
-• Salida: pixels
+- FragmentShader:
+Etapa programable y no opcional. Se ejecuta por cada fragmento, es decir, por cada pixel de cada primitiva.
+Recibe los valores interpolados para el píxel, como color, normales o coordenadas de textura. Su función es calcular el 
+color final del fragmento, teniendo en cuenta iluminación, texturas y otros efectos visuales. Genera como salida el color 
+asociado al píxel.
 
-El proceso de renderizado genera al final el contenido de la imagen en una estructura que
-conoceremos como Color Buffer.
+
+- Operaciones de raster: Etapa no programable que combina los diferentes fragmentos para generar la versión final de la 
+imagen. Algunos de los procesos incluidos en esta etapa pueden ser ejecutados antes del FragmentShader por motivos de 
+eficiencia. Se aplican pruebas como el test de profundidad, el test de stencil y el blending para mezclar colores 
+de manera adecuada.
+El proceso de renderizado genera al final el contenido de la imagen en una estructura que conoceremos como Color Buffer.
 
 
 
