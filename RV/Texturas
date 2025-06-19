@@ -40,11 +40,10 @@ MipMaps y Normal Maps (Falta Info)
 
 Los mipmaps son versiones reducidas de una textura original, usadas para mejorar la calidad visual y evitar
 el aliasing cuando la textura se muestra muy pequeña. Cada nivel se obtiene dividiendo la textura anterior a la mitad 
-en ancho y alto.
+en ancho y alto. Usar mipmaps mejora el rendimiento y la calidad, aunque requiere más memoria.
 
 En OpenGL, se cargan con glTexImage2D() especificando el nivel, o se generan automáticamente con glGenerateMipmap(). 
-Se configuran los niveles con glTexParameteri(). Usar mipmaps mejora el rendimiento y la calidad, aunque requiere
-más memoria.
+Se configuran los niveles con glTexParameteri().
 
 
 El normal mapping es una técnica que permite simular detalles de rugosidad, grietas y relieves en la superficie 
@@ -54,6 +53,8 @@ de la superficie.
 Estos vectores normales modificados afectan el cálculo de la iluminación en el fragment shader, haciendo que la 
 superficie parezca más detallada y con irregularidades, aunque su geometría siga siendo simple. De esta forma, 
 se logra un efecto visual de mayor realismo con un costo computacional mucho menor.
+Para aplicarlo, es necesario calcular los vectores tangente y bitangente de cada vértice a partir de la geometría del
+triángulo y sus coordenadas de textura.
 
 
 
