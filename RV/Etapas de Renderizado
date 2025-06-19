@@ -73,6 +73,16 @@ Se conoce como “Operaciones de raster” a las funciones realizadas en la últ
 Indique cuales son estas operaciones y descríbalas brevemente.
 */
 
+Las operaciones de raster son funciones no programables que se ejecutan en la última etapa del renderizado en OpenGL.
+Su objetivo es decidir qué fragmentos se convierten en píxeles visibles en la imagen final y optimizar el rendimiento.
+
+Entre ellas está el pixel ownership test, que verifica si un píxel pertenece a la ventana activa de OpenGL.
+El scissor test define una región rectangular dentro de la cual se permite el renderizado. 
+El stencil test compara valores con el stencil buffer para decidir si un fragmento debe dibujarse o no.
+El depth test se encarga de comprobar si un fragmento está frente a otros ya dibujados, y solo se muestra si está más cerca 
+del observador. 
+Finalmente, el blending mezcla el color del fragmento con el del píxel existente según su nivel de transparencia, 
+permitiendo representar efectos como objetos translúcidos.
 
 
 
@@ -135,15 +145,13 @@ Las primitivas incluidas en OpenGL son:
 - Punto, compuesto por un único vértice.
 - Línea, que une dos vértices.
 - Triángulo, formado por tres vértices. Es la forma de primitiva más utilizada.
-- Parche. No tienen un significado geométrico definido. Es un tipo especial de primitiva que
-se utiliza en los shaders de teselado, donde se convierte la información del parche en un
-conjunto de primitivas geométricas.
+- Parche. No tienen un significado geométrico definido. Es un tipo especial de primitiva que se utiliza en los shaders de 
+teselado, donde se convierte la información del parche en un conjunto de primitivas geométricas.
+- Adyacencia:son un tipo especial de primitivas que, además de incluir los vértices principales de una figura, 
+también contienen información sobre los vértices vecinos o adyacentes. 
 
-Salvo las primitivas de tipo parche, que se convierten en otras primitivas tras la etapa de
-teselado, todas pueden ser tratadas directamente por el Fragment Shader, a no ser que estén
-definidas como primitivas de adyacencia. Estas primitivas son aquellas que comparten aristas
-con otras primitivas, pero una de ellas se observa desde su cara frontal y la otra desde su cara
-posterior.
+Salvo las primitivas de tipo parche, que se usan en la etapa de teselado, y las primitivas de adyacencia, que se tratan 
+en el shader de geometría, todas pueden ser tratadas directamente por el Fragment Shader.
 
 Para distinguir entre la cara frontal y posterior de una primitiva, se obtiene el vector normal de
 la primitiva. Este es un vector perpendicular a la superficie de la primitiva, y si su dirección en
