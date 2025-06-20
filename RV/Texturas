@@ -27,9 +27,11 @@ cargada con glTexSubImageXD, indicando desde qué posición empieza a sobrescrib
 
 - Aplicacion:
 Los puntos en las texturas se identifican con coordenadas (s, t, r, q) que parten desde la esquina inferior izquierda. 
-Para aplicar una textura sobre una primitiva, se calculan las coordenadas de texturas correspondientes a cada píxel. 
+Para aplicar una textura sobre una primitiva, se calculan las coordenadas de texturas correspondientes a cada píxel, y se 
+busca en la textura el color correspondiente a esas coordenadas. Esto se conoce como texture-filtering.
 Dado que los tamaños de la primitiva y la textura pueden ser diferentes, se filtrará la textura para aumentarla o encogerla.
 El proceso de filtrado se puede configurar con las funciones glTexParameter.
+El comportamiento de los filtros de textura más allá de los límites se denomina texture wrapping. 
 
 
 
