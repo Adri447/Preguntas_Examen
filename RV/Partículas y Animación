@@ -13,14 +13,11 @@ La técnica utilizada se conoce como buffer “ping-pong”, ya que realiza el r
 se ejecuta únicamente el Vertex Shader para generar nuevos datos, y en la segunda se lleva a cabo el renderizado completo, 
 utilizando como entrada el buffer generado en la primera pasada.
 
-Se definen dos Transform Feedback Objects (TFO) que describen los buffers a utilizar como salida y entrada del Vertex Shader.
+Se definen dos Transform Feedback Objects que describen los buffers a utilizar como salida y entrada del Vertex Shader.
 Estos se crean con glGenTransformFeedbacks, indicando el número de objetos y el array donde se almacenarán sus 
-identificadores (en este caso, dos). Luego, se activan con glBindTransformFeedback y se enlazan los buffers deseados
+identificadores. Luego, se activan con glBindTransformFeedback y se enlazan los buffers deseados
 mediante glBindBufferBase, uno por cada atributo que se quiera conservar.
 
 A continuación, se define la relación entre las salidas del shader y los buffers del TFO mediante glTransformFeedbackVaryings. 
-Durante el renderizado, se inicia el proceso de transform feedback con la función glBeginTransformFeedback.
-
-Cuando se lanzan las primitivas de dibujo, las salidas del Vertex Shader se almacenan directamente en los buffers
-indicados por el TFO. Para finalizar el proceso, se utiliza el comando glEndTransformFeedback.
+Durante el renderizado, se inicia el proceso de transform feedback con la función glBeginTransformFeedback. Para finalizar el proceso, se utiliza el comando glEndTransformFeedback.
 
