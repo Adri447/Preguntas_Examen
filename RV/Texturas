@@ -23,7 +23,7 @@ que se deseen y un array donde los almacene. Después, se define el tipo de text
 Para cargar una textura a un identificador, se utiliza la función glTexImageXD según el tipo de textura.
 También se puede asignar las texturas copiando los valores del color buffer con glCopyTexImageXD, 
 indicando desde qué posición tiene que copiar. Otra forma puede ser cargar sólo un trozo de una textura sobre la ya 
-cargada con glSubTexImageXD, indicando desde qué posición empieza a sobrescribir.
+cargada con glTexSubImageXD, indicando desde qué posición empieza a sobrescribir. Además, se pueden combinar ambas.
 
 - Aplicacion:
 Los puntos en las texturas se identifican con coordenadas (s, t, r, q) que parten desde la esquina inferior izquierda. 
