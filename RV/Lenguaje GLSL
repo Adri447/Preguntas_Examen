@@ -74,8 +74,8 @@ entradas del shader.
 
 Para crear un VAO, se utiliza glGenVertexArrays, que genera uno o más identificadores. Para activarlo, se usa 
 glBindVertexArray. Luego, se definen los atributos con glVertexAttribPointer, especificando el índice del atributo, 
-la cantidad de componentes, el tipo de dato, y otros parámetros. El índice del atributo se puede asignar antes de linkar el programa por
-medio del comando glBindAttribLocation.
+la cantidad de componentes, el tipo de dato, y otros parámetros. El índice del atributo se puede asignar antes de linkar 
+el programa por medio del comando glBindAttribLocation.
 
 
 
