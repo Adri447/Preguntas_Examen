@@ -1,1 +1,88 @@
+#### Complejidad ####
+
+/*
+¿Qué es un problema de clase P?   // No es lo mismo lenguaje que problema
+*/
+
+
+/*
+¿Qué es un problema de clase NP?
+*/
+
+
+/*
+¿Qué es un verificador de un lenguaje?
+*/
+
+
+/*
+¿Qué es un lenguaje NP-Completo?
+*/
+
+
+/*
+Demuestre que un lenguaje es NP si y solo si es verificable polinomialmente.
+*/
+
+
+
+/*
+Demuestre que el problema CLIQUE es NP-Completo.
+*/
+
+
+
+
+#### Bombeo ####
+
+/*
+Enuncie y demuestre el Lema de Bombeo para Autómatas Finitos.
+*/
+
+
+/*
+Enuncie y demuestre el Lema de Bombeo para Autómatas de Pila.
+*/
+
+
+
+
+##### Cuantica #####
+
+/*
+¿Qué es un qubit?
+*/
+
+/*
+¿Qué es una puerta cuántica?
+*/
+
+/*
+Enuncie y demuestre el teorema de no-clonación de qbits.
+*/
+
+/*
+Describa el algoritmo de Deutsch de computación cuántica
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
