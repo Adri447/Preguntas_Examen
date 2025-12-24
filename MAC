@@ -67,16 +67,36 @@ Demuestre que el problema CLIQUE es NP-Completo.
 
 
 
+
 #### Bombeo ####
 
 /*
 Enuncie y demuestre el Lema de Bombeo para Autómatas Finitos.
 */
 
+Enunciado:
+Sea L un lenguaje regular reconocido por un autómata finito determinista con m estados. Entonces, para toda cadena w perteneciente a L con longitud |w| ≥ m, 
+existen cadenas r, s y t tales que w = rst, con |s| ≥ 1 y |rs| ≤ m, y para todo n ≥ 0 se cumple que rs^n t pertenece a L.
+
+Demostración:
+Al procesar una cadena w con longitud al menos m, el autómata recorre m+1 estados. Dado que el autómata solo tiene m estados, alguno de ellos debe repetirse según el principio del palomar. 
+Esta repetición genera un ciclo en el autómata que corresponde a la subcadena s, se puede “bombear”, es decir, el autómata también podría reconocer las cadenas: rt, rst, rsst, rssst.
+El autómata sigue alcanzando un estado de aceptación, por lo que rs^n t pertenece a L para todo n ≥ 0.
+
 
 /*
 Enuncie y demuestre el Lema de Bombeo para Autómatas de Pila.
 */
+
+Enunciado:
+Si L es un lenguaje libre de contexto, existe un p ≥ 1 tal que, toda cadena del lenguaje w de longitud mayor que p (|w|>p) puede escribirse como w = r s t u v, donde las subcadenas cumplen que:
+– | s t u | ≤ p
+– | s u | ≥ 1
+– r s^n t u^n v pertenece a L
+
+Demostración:
+Dado que la gramática libre de contexto tiene un número de símbolos No Terminales finito, si una cadena w es lo suficientemente larga, entonces en su árbol
+de derivación debe repetirse algún símbolo No Terminal N. Esto permite “bombear” la derivación de N a N: N -> sNu -> ssNuu -> sstuu
 
 
 
