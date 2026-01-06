@@ -4,47 +4,46 @@
 ¿Qué es un problema de clase P?   // No es lo mismo lenguaje que problema
 */
 
-Un problema de clase P es un problema de decisión que puede resolverse en tiempo polinomial mediante una Máquina de Turing determinista de una cinta.
+Un problema de clase P es un problema que es decidible en tiempo polinomial mediante una Máquina de Turing determinista de una cinta.
 Dado un lenguaje 𝐿, existe una Máquina de Turing determinista que decide si una cadena 𝑤 pertenece a 𝐿 en tiempo polinomial.
 
+La clase P es invariante a los modelos de computacion que puedan simularse en tiempo polinomial en MT de una cinta.
 
 /*
 ¿Qué es un problema de clase NP?
 */
 
-Un problema de clase NP es un problema de decisión que puede resolverse en tiempo polinomial mediante una Máquina de Turing no determinista.
+Un problema de clase NP es un problema que es decidible en tiempo polinomial mediante una Máquina de Turing no determinista.
 
 
 /*
 ¿Qué es un verificador de un lenguaje?
 */
 
-Un verificador de un lenguaje 𝐴 es un algoritmo determinista 𝑉 tal que:
-A={w∣V acepta ⟨w,c⟩ para alguna cadena c}
-
+Un verificador de un lenguaje 𝐴 es un algoritmo que permite saber si una cadena pertenece al lenguaje.
 Es decir, una cadena w pertenece al lenguaje A si y solo si existe una cadena c tal que el algoritmo V acepta el par ⟨w,c⟩
+A = {w ∣ V acepta ⟨w,c⟩ para alguna cadena c}
 
-Se dice que V es un verificador en tiempo polinomial si su tiempo de ejecución está acotado por un polinomio en la longitud de 𝑤.
 Un lenguaje A es verificable polinomialmente si existe un verificador en tiempo polinomial para A.
 
 
 
 /*
-Demuestre que un lenguaje es NP si y solo si es verificable polinomialmente.
+Demuestre que un lenguaje A es NP si y solo si es verificable polinomialmente.
 */
 
 Demostración: (<-)
-Si A es verificable polinomialmente, entonces existe un verificador V en tiempopolinomial O(nk). 
+Si A es verificable polinomialmente, entonces existe un verificador V en tiempo polinomial O(n^k). 
 Podemos construir una Máquina de Turing indeterminista en tiempo polinomial de la siguiente forma:
 Dada w de longitud n:
- 1.- Generar de forma indeterminista una cadena c de longitud máxima nk.
+ 1.- Generar de forma indeterminista una cadena c de longitud máxima n^k.
  2.- Ejecutar V sobre <w,c>
  3.- Si V acepta, aceptar. Si no, rechazar.
 
 
 Demostración: (->)
-Si A es NP entonces existe una Máquina de Turing no determinista (MT) que decide en tiempo polinomial O(nk). 
-Podemos construir un verificador V en tiempo polinomial O(nk) de la siguiente forma:
+Si A es NP entonces existe una Máquina de Turing no determinista que decide en tiempo polinomial O(n^k). 
+Podemos construir un verificador V en tiempo polinomial O(n^k) de la siguiente forma:
 Dadas <w,c> :
  1.- Ejecutar MT sobre w, tratando cada símbolo de c como la elección de cada paso indeterminista de MT.
  2.- Si el camino seleccionado por c acepta w, aceptar. Si no, rechazar.
