@@ -59,6 +59,19 @@ Los problemas NP-completo son problemas NP que, si tuvieran solución en tiempo 
 - Si algún problema NP-completo tiene solución polinomial, entonces todos los problemas NP tienen.
 
 
+
+/*
+Enuncie el Teorema de Cook y Levin y describa su demostración
+*/
+
+Sea SAT el lenguaje formado por las fórmulas booleanas satisfactibles, es decir, que existan valores que hacen cierta a la fórmula.
+El Teorema de Cook y Levin establece que el lenguaje SAT pertenece a la clase P si y solo si P = NP. Es decir, SAT es un problema NP-Completo y por tanto 
+existe un verificador que verifica SAT en tiempo polinomial (tabla de verdad).
+El teorema plante un tablero de configuración en el que si se alcanza un estado de aceptación significaría que la máquina acepta w.
+La idea de Cook y Levin era convertir el tablero en un conjunto de fórmulas booleanas de orden O(n^2k), por lo tanto se demostraría que cualquier problema NP
+puede reducirse en tiempo polinomial a un problema de satisfactibilidad (SAT) y, por lo tanto, SAT sería NP-Completo.
+
+
 /*
 Demuestre que el problema CLIQUE es NP-Completo.
 */
