@@ -96,6 +96,18 @@ Por tanto, cualquier problema de NP puede reducirse en tiempo polinomial al prob
 Demuestre que el problema CLIQUE es NP-Completo.
 */
 
+Podemos demostrarlo si encontramos una reducción del problema 3SAT a CLIQUE en tiempo polinomial.
+
+Dada una fórmula-3cnf compuesta de k claúsulas (a ∨ b ∨ c), se puede construir un grafo G donde cada literal de cada claúsula genera un nodo y 
+donde cada nodo está enlazado con todos los nodos del grafo excepto los de su cláusula y los contradictorios (por ejemplo, a y ā).
+
+Dada una fórmula con k claúsulas, el tamaño del grafo generado tendrá 3k nodos y O(k^2) arcos. Por tanto se puede construir el grafo en un tiempo polinómico.
+
+La fórmula es satisfactible si y solo si el grafo tiene un k-clique. Ese k-clique corresponde a la solución de la fórmula.
+Es decir, si la variable booleana x aparece en el k-clique entonces la solución contiene el valor x=TRUE. Si el k-clique contiene la negación de x, entonces la solución contiene el valor x=FALSE.
+
+Por tanto, el problema 3SAT se reduce en tiempo polinomial al problema CLIQUE, y se concluye que CLIQUE es NP-completo.
+
 
 
 
