@@ -151,17 +151,74 @@ de derivación debe repetirse algún símbolo No Terminal N. Esto permite “bom
 ¿Qué es un qubit?
 */
 
+Un qubit es la unidad básica de información en la teoría cuántica de la información, representado por un estado cuántico en un espacio de Hilbert bidimensional. 
+Este espacio tiene una base ortonormal formada por dos estados, |0> y |1>, y cualquier qubit puede expresarse como una combinación lineal a0|0> + a1|1>, 
+donde a0 y a1 son números complejos cuya suma de los cuadrados de sus módulos es 1 para asegurar la normalización del estado.
+
+
 /*
 ¿Qué es una puerta cuántica?
 */
+
+Una puerta cuántica es un dispositivo que permite transformar el estado de uno o varios qubits. 
+Matemáticamente, se describe como un operador lineal que actúa sobre el estado cuántico, y por tanto se puede representar en forma matricial.
+
+
 
 /*
 Enuncie y demuestre el teorema de no-clonación de qbits.
 */
 
+Teorema de No-Clonación:
+Es imposible copiar un estado cuántico desconocido de manera exacta.
+
+Demostración:
+Matemáticamente podemos demostrar este teorema considerando un sistema de dos qubits donde queremos generar una copia del primer qubit sobre el segundo.
+
+Supongamos que tenemos un qubit arbitrario |ψ⟩ = a∣0⟩ + b∣1⟩ que queremos clonar y un segundo qubit inicializado en |0>. 
+Queremos un operador C tal que 
+C(|0> ⊗ |0>) = |0> ⊗ |0>.
+C(|1> ⊗ |0>) = |1> ⊗ |1>. 
+C((a∣0⟩ + b∣1⟩) ⊗ ∣0⟩) = (a∣0⟩ + b∣1⟩) ⊗ (a∣0⟩ + b∣1⟩).
+
+Los dos primeros resultados se refieren a la clonación de los estados de la base. Aplicando la linealidad de los operadores cuántico,s el resultado en el caso general sería
+C((a|0> + b|1>) ⊗ |0>) = a(|0> ⊗ |0>) + b(|1> ⊗ |1>). 
+
+Por tanto es imposible que el operador C genere el resultado deseado para el caso general.
+
+Conclusión:
+No es posible construir un clon exacto de un qubit desconocido, reflejando la imposibilidad de copiar información cuántica sin alterarla y relacionándose con el principio de incertidumbre.
+
+
+
 /*
 Describa el algoritmo de Deutsch de computación cuántica
 */
+
+Algoritmo de Deutsch
+
+El algoritmo de Deutsch es uno de los primeros algoritmos de computación cuántica que muestra cómo un ordenador cuántico puede resolver un problema más rápido que uno clásico. 
+El problema consiste en determinar si una función booleana f: {0,1} → {0,1} es constante (devuelve el mismo valor para ambas entradas) o balanceada (devuelve valores diferentes para las dos entradas).
+
+Descripción del algoritmo:
+
+Se preparan dos qubits:
+El primero en el estado |0⟩
+El segundo en el estado |1⟩
+
+Se aplican puertas Hadamard (H) a ambos qubits, creando superposiciones:
+El primer qubit queda en (|0⟩ + |1⟩)/√2
+El segundo en (|0⟩ - |1⟩)/√2
+
+Se aplica el operador cuántico Uf que codifica la función f, actuando sobre los dos qubits y modificando el estado según f.
+Se aplica otra puerta Hadamard al primer y segundo qubit.
+
+Se mide el primer qubit:
+Si el resultado es 0, la función f es constante.
+Si el resultado es 1, la función f es balanceada.
+
+Ventaja cuántica:
+El algoritmo determina la propiedad de la función con una sola evaluación de f, mientras que un algoritmo clásico necesitaría evaluar f(0) y f(1) para decidir.
 
 
 
