@@ -20,8 +20,8 @@ Un problema de clase NP es un problema que es decidible en tiempo polinomial med
 ¿Qué es un verificador de un lenguaje?
 */
 
-Un verificador de un lenguaje 𝐴 es un algoritmo que permite saber si una cadena pertenece al lenguaje.
-Es decir, una cadena w pertenece al lenguaje A si y solo si existe una cadena c tal que el algoritmo V acepta el par ⟨w,c⟩
+Un verificador de un lenguaje es un algoritmo que permite saber si una cadena pertenece al lenguaje.
+Es decir, una cadena w pertenece al lenguaje A si existe una cadena c tal que el algoritmo V acepta el par ⟨w,c⟩
 A = {w ∣ V acepta ⟨w,c⟩ para alguna cadena c}
 
 Un lenguaje A es verificable polinomialmente si existe un verificador en tiempo polinomial para A.
@@ -70,6 +70,26 @@ existe un verificador que verifica SAT en tiempo polinomial (tabla de verdad).
 El teorema plante un tablero de configuración en el que si se alcanza un estado de aceptación significaría que la máquina acepta w.
 La idea de Cook y Levin era convertir el tablero en un conjunto de fórmulas booleanas de orden O(n^2k), por lo tanto se demostraría que cualquier problema NP
 puede reducirse en tiempo polinomial a un problema de satisfactibilidad (SAT) y, por lo tanto, SAT sería NP-Completo.
+
+
+
+Teorema de Cook-Levin
+Sea SAT el lenguaje formado por las fórmulas booleanas satisfactibles. El Teorema de Cook-Levin establece que SAT es NP-completo.
+
+Demostración (idea):
+Sea A un lenguaje perteneciente a NP. Entonces existe una Máquina de Turing no determinista N que decide A en tiempo polinomial n^k. Para una entrada w de longitud n, se construye un tablero de configuraciones de tamaño n^k x n^k, 
+donde cada fila representa una configuración de la máquina y las filas sucesivas corresponden a las transiciones de N.
+
+Un tablero es aceptable si contiene una configuración que alcanza el estado de aceptación. Determinar si la máquina N acepta la entrada w equivale a determinar si existe un tablero aceptable.
+
+Este problema se transforma en un problema de satisfactibilidad construyendo una fórmula lógica
+phi = phi_cell AND phi_start AND phi_move AND phi_accept,
+donde phi_cell garantiza que en cada celda aparece un único símbolo, phi_start describe la configuración inicial, phi_move describe las transiciones válidas de la máquina y phi_accept asegura que se alcanza un estado de aceptación.
+
+La fórmula lógica resultante tiene tamaño O(n^(2k)), por lo que la transformación se realiza en tiempo polinomial. 
+Por tanto, cualquier problema de NP puede reducirse en tiempo polinomial al problema SAT, y en consecuencia SAT es NP-completo.
+
+
 
 
 /*
