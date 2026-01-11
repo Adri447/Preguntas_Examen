@@ -1,11 +1,10 @@
 #### Complejidad ####
 
 /*
-¿Qué es un problema de clase P?   // No es lo mismo lenguaje que problema
+¿Qué es un problema de clase P? 
 */
 
 Un problema de clase P es un problema que es decidible en tiempo polinomial mediante una Máquina de Turing determinista de una cinta.
-Dado un lenguaje 𝐿, existe una Máquina de Turing determinista que decide si una cadena 𝑤 pertenece a 𝐿 en tiempo polinomial.
 
 La clase P es invariante a los modelos de computacion que puedan simularse en tiempo polinomial en MT de una cinta.
 
