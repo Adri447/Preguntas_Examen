@@ -74,17 +74,20 @@ puede reducirse en tiempo polinomial a un problema de satisfactibilidad (SAT) y,
 
 
 Teorema de Cook-Levin
-Sea SAT el lenguaje formado por las fórmulas booleanas satisfactibles. El Teorema de Cook-Levin establece que SAT es NP-completo.
+Sea SAT el lenguaje formado por las fórmulas booleanas satisfactibles. El Teorema establece que SAT es NP-completo.
 
 Demostración (idea):
 Sea A un lenguaje perteneciente a NP. Entonces existe una Máquina de Turing no determinista N que decide A en tiempo polinomial n^k. Para una entrada w de longitud n, se construye un tablero de configuraciones de tamaño n^k x n^k, 
 donde cada fila representa una configuración de la máquina y las filas sucesivas corresponden a las transiciones de N.
 
-Un tablero es aceptable si contiene una configuración que alcanza el estado de aceptación. Determinar si la máquina N acepta la entrada w equivale a determinar si existe un tablero aceptable.
+Determinar si la máquina N acepta la entrada w equivale a determinar si existe un tablero aceptable. Un tablero es aceptable si contiene una configuración que alcanza el estado de aceptación. 
 
 Este problema se transforma en un problema de satisfactibilidad construyendo una fórmula lógica
-phi = phi_cell AND phi_start AND phi_move AND phi_accept,
-donde phi_cell garantiza que en cada celda aparece un único símbolo, phi_start describe la configuración inicial, phi_move describe las transiciones válidas de la máquina y phi_accept asegura que se alcanza un estado de aceptación.
+phi = phi_cell AND phi_start AND phi_move AND phi_accept, donde: 
+phi_cell garantiza que en cada celda aparece un único símbolo
+phi_start describe la configuración inicial
+phi_move describe las transiciones válidas de la máquina 
+phi_accept asegura que se alcanza un estado de aceptación
 
 La fórmula lógica resultante tiene tamaño O(n^(2k)), por lo que la transformación se realiza en tiempo polinomial. 
 Por tanto, cualquier problema de NP puede reducirse en tiempo polinomial al problema SAT, y en consecuencia SAT es NP-completo.
