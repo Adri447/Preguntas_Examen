@@ -74,7 +74,8 @@ puede reducirse en tiempo polinomial a un problema de satisfactibilidad (SAT) y,
 
 
 Teorema de Cook-Levin
-Sea SAT el lenguaje formado por las fórmulas booleanas satisfactibles. El Teorema establece que SAT es NP-completo.
+Sea SAT el lenguaje formado por las fórmulas booleanas satisfactibles, es decir, que existan valores que hacen cierta a la fórmula.
+El Teorema establece que SAT es NP-completo. Es decir, pertenece a la clase P si y solo si P = NP.
 
 Demostración (idea):
 Sea A un lenguaje perteneciente a NP. Entonces existe una Máquina de Turing no determinista N que decide A en tiempo polinomial n^k. Para una entrada w de longitud n, se construye un tablero de configuraciones de tamaño n^k x n^k, 
